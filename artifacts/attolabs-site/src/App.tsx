@@ -129,6 +129,21 @@ const industries = [
   'Logistics',
 ];
 
+const clients = [
+  'World Health Organization',
+  'Worldline',
+  'Nexi',
+  'Bechtle',
+  'Lund University',
+  'Dublin City University',
+  'IT Park Uzbekistan',
+  'INAIA',
+  'umlaut',
+  'LBTU',
+  'Marmara Teknopark',
+  'Axxessio',
+];
+
 const pageMeta: Record<Locale, Record<string, { title: string; description: string }>> = {
   en: {
     home: {
@@ -149,7 +164,7 @@ const pageMeta: Record<Locale, Record<string, { title: string; description: stri
     },
     careers: {
       title: 'Careers — AttoLabs',
-      description: 'Join a small, distributed team building useful software for the AI era.',
+      description: 'Join a large, distributed team building useful software for the AI era.',
     },
   },
   ru: {
@@ -414,7 +429,7 @@ function Hero() {
         </motion.div>
         <motion.div initial={reduce ? false : { opacity: 0, scale: .8, rotate: -12 }} animate={reduce ? undefined : { opacity: 1, scale: 1, rotate: 0 }} transition={{ duration: 1, delay: .2, ease: [0.22, 1, 0.36, 1] }} className="float-mark relative">
           <RotorArt />
-          <div className="absolute bottom-2 left-0 max-w-[180px] mono-label leading-[1.6] text-[#F4ECE7]/60">A small team<br />with a wide orbit</div>
+          <div className="absolute bottom-2 left-0 max-w-[180px] mono-label leading-[1.6] text-[#F4ECE7]/60">A large team<br />with a wide orbit</div>
         </motion.div>
       </div>
       <div className="relative border-t border-[#F4ECE7]/25">
@@ -483,7 +498,66 @@ function Proof() {
   return <section className="bg-[#1A1A1A] py-24 text-[#F4ECE7] md:py-32"><div className="site-wrap"><SectionIntro dark tag="04 / The signal" title={<>Serious about<br /><span className="text-[#F6D24A]">useful.</span></>}><span>We measure our work by the change it makes, not the noise it creates. The best compliment is a team that can go further after us.</span></SectionIntro><div className="mt-20 grid gap-12 md:grid-cols-[1.3fr_.7fr] md:gap-24"><blockquote className="border-l-2 border-[#F0543D] pl-6 md:pl-10"><p className="display-font max-w-3xl text-[clamp(2rem,4vw,4rem)] font-medium leading-[.98] tracking-[-.06em]">“AttoLabs gave us the rare combination of momentum and calm. We shipped something our customers understood on day one.”</p><footer className="mt-8 mono-label text-[#F4ECE7]/55">Maya Chen / VP Product, Liminal Bank</footer></blockquote><div className="grid grid-cols-2 gap-x-6 gap-y-9 self-end">{[['2.4m', 'customers reached'], ['38%', 'faster decisions'], ['11 mo', 'from brief to launch'], ['4.9/5', 'team trust score']].map(([num, label]) => <div key={label} className="border-t border-[#F4ECE7]/25 pt-4"><div className="display-font text-3xl tracking-[-.06em] text-[#F0543D]">{num}</div><div className="mt-2 mono-label text-[#F4ECE7]/50">{label}</div></div>)}</div></div></div></section>;
 }
 
+function Clients() {
+  return (
+    <section className="border-b border-[#1A1A1A]/20 bg-[#F4ECE7] py-20 md:py-28">
+      <div className="site-wrap">
+        <SectionIntro
+          tag="05 / Clients"
+          title={<>Trusted by teams<br /><span className="text-[#F0543D]">doing consequential work.</span></>}
+        >
+          <span>From global health and financial infrastructure to universities and technology leaders, we work with teams where software has something real to carry.</span>
+        </SectionIntro>
+        <div className="mt-16 grid border-t border-[#1A1A1A]/20 md:grid-cols-4">
+          {clients.map((client, index) => (
+            <div
+              key={client}
+              className={`flex min-h-28 items-center border-b border-[#1A1A1A]/20 py-7 md:px-6 ${index % 4 !== 3 ? 'md:border-r' : ''} ${index < 4 ? 'md:pt-8' : ''}`}
+            >
+              <span className="display-font text-[1.35rem] font-semibold leading-none tracking-[-.045em] text-[#1A1A1A]/80 md:text-[1.55rem]">
+                {client}
+              </span>
+            </div>
+          ))}
+        </div>
+        <p className="mt-7 mono-label text-[#1A1A1A]/45">A selection of organizations AttoLabs has worked with</p>
+      </div>
+    </section>
+  );
+}
+
 function About() {
+  return (
+    <section id="about" className="bg-[#F4ECE7] py-24 md:py-36">
+      <div className="site-wrap">
+        <SectionIntro tag="06 / Who we are" title={<>A large team<br />that <span className="text-[#F0543D]">cares.</span></>}>
+          <span>AttoLabs is a distributed engineering studio for teams doing consequential work. We bring broad product thinking, systems discipline, and a healthy respect for the details.</span>
+        </SectionIntro>
+        <div className="mt-20 grid gap-8 md:grid-cols-[.9fr_1.1fr]">
+          <div className="relative min-h-[340px] overflow-hidden bg-[#F0543D] p-7">
+            <div className="absolute -right-12 -top-12 h-64 w-64 rounded-full border-[32px] border-[#F6D24A]" />
+            <div className="absolute -bottom-16 -left-10 h-56 w-56 rounded-full border border-[#F4ECE7]/70" />
+            <div className="relative flex h-full flex-col justify-between text-[#F4ECE7]">
+              <div className="mono-label">We are / a wide orbit</div>
+              <div>
+                <div className="display-font text-5xl font-semibold leading-[.87] tracking-[-.08em]">The future<br />needs builders.</div>
+                <div className="mt-6 max-w-xs text-sm leading-relaxed text-[#F4ECE7]/75">A large distributed team working across London, Lisbon, Toronto, and São Paulo.</div>
+              </div>
+            </div>
+          </div>
+          <div className="grid content-center gap-8 md:grid-cols-2 md:gap-x-12">
+            <div><Code2 className="text-[#F0543D]" size={24} /><h3 className="display-font mt-5 text-xl font-semibold">Technical by default</h3><p className="mt-3 text-sm leading-[1.6] text-[#1A1A1A]/60">The people in the room are the people writing the software. Architecture is a conversation, not a handoff.</p></div>
+            <div><Globe2 className="text-[#F0543D]" size={24} /><h3 className="display-font mt-5 text-xl font-semibold">Different by design</h3><p className="mt-3 text-sm leading-[1.6] text-[#1A1A1A]/60">Distributed teams sharpen our thinking. Many perspectives, one shared standard for the work.</p></div>
+            <div><Sparkles className="text-[#F0543D]" size={24} /><h3 className="display-font mt-5 text-xl font-semibold">Curious, not careless</h3><p className="mt-3 text-sm leading-[1.6] text-[#1A1A1A]/60">We use AI as leverage, with the judgement to know where it belongs and where it doesn’t.</p></div>
+            <div><Clock3 className="text-[#F0543D]" size={24} /><h3 className="display-font mt-5 text-xl font-semibold">Built for the long run</h3><p className="mt-3 text-sm leading-[1.6] text-[#1A1A1A]/60">We leave systems clearer than we found them, so your team owns the next chapter.</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function AboutLegacy() {
   return <section id="about" className="bg-[#F4ECE7] py-24 md:py-36"><div className="site-wrap"><SectionIntro tag="05 / Who we are" title={<>Small enough<br />to <span className="text-[#F0543D]">care.</span></>}><span>AttoLabs is a distributed engineering studio for teams doing consequential work. We bring product thinking, systems discipline, and a healthy respect for the details.</span></SectionIntro><div className="mt-20 grid gap-8 md:grid-cols-[.9fr_1.1fr]"><div className="relative min-h-[340px] overflow-hidden bg-[#F0543D] p-7"><div className="absolute -right-12 -top-12 h-64 w-64 rounded-full border-[32px] border-[#F6D24A]" /><div className="absolute -bottom-16 -left-10 h-56 w-56 rounded-full border border-[#F4ECE7]/70" /><div className="relative flex h-full flex-col justify-between text-[#F4ECE7]"><div className="mono-label">We are / a useful distance away</div><div><div className="display-font text-5xl font-semibold leading-[.87] tracking-[-.08em]">The future<br />needs builders.</div><div className="mt-6 max-w-xs text-sm leading-relaxed text-[#F4ECE7]/75">Our team works across London, Lisbon, Toronto, and São Paulo.</div></div></div></div><div className="grid content-center gap-8 md:grid-cols-2 md:gap-x-12"><div><Code2 className="text-[#F0543D]" size={24} /><h3 className="display-font mt-5 text-xl font-semibold">Technical by default</h3><p className="mt-3 text-sm leading-[1.6] text-[#1A1A1A]/60">The people in the room are the people writing the software. Architecture is a conversation, not a handoff.</p></div><div><Globe2 className="text-[#F0543D]" size={24} /><h3 className="display-font mt-5 text-xl font-semibold">Different by design</h3><p className="mt-3 text-sm leading-[1.6] text-[#1A1A1A]/60">Distributed teams sharpen our thinking. Four perspectives, one shared standard for the work.</p></div><div><Sparkles className="text-[#F0543D]" size={24} /><h3 className="display-font mt-5 text-xl font-semibold">Curious, not careless</h3><p className="mt-3 text-sm leading-[1.6] text-[#1A1A1A]/60">We use AI as leverage, with the judgement to know where it belongs and where it doesn’t.</p></div><div><Clock3 className="text-[#F0543D]" size={24} /><h3 className="display-font mt-5 text-xl font-semibold">Built for the long run</h3><p className="mt-3 text-sm leading-[1.6] text-[#1A1A1A]/60">We leave systems clearer than we found them, so your team owns the next chapter.</p></div></div></div></div></section>;
 }
 
@@ -506,9 +580,14 @@ function PageFrame({ children }: { children: ReactNode }) {
   return <div className="grain"><Header />{children}<Footer /></div>;
 }
 
-function Home({ locale = 'en' }: { locale?: Locale }) {
+function HomeLegacy({ locale = 'en' }: { locale?: Locale }) {
   const reduce = useReducedMotion();
   return <><Meta locale={locale} page="home" /><div className="grain"><Hero /><Stats /><motion.main initial="hidden" whileInView="visible" viewport={{ once: true, amount: .1 }} variants={reduce ? undefined : fadeIn}><Work /><Process /><Proof /><About /><Jobs /><Contact /></motion.main><Footer /></div></>;
+}
+
+function Home({ locale = 'en' }: { locale?: Locale }) {
+  const reduce = useReducedMotion();
+  return <><Meta locale={locale} page="home" /><div className="grain"><Hero /><Stats /><motion.main initial="hidden" whileInView="visible" viewport={{ once: true, amount: .1 }} variants={reduce ? undefined : fadeIn}><Work /><Process /><Proof /><Clients /><About /><Jobs /><Contact /></motion.main><Footer /></div></>;
 }
 
 function CasesPage({ locale = 'en' }: { locale?: Locale }) {
@@ -523,8 +602,12 @@ function CaseDetailPage({ locale = 'en' }: { locale?: Locale }) {
   return <><Meta locale={locale} page="cases" /><PageFrame><main className="bg-[#F4ECE7]"><div className="site-wrap py-20 md:py-28"><Link href="/cases" className="mono-label text-[#F0543D]">← Back to all work</Link><div className="mt-16 grid gap-12 md:grid-cols-[.9fr_1.1fr] md:items-end"><div><SectionTag>Case / {item.id}</SectionTag><div className="mono-label mt-10 text-[#F0543D]">{item.client}</div><h1 className="display-font mt-4 max-w-2xl text-[clamp(3.8rem,8vw,8rem)] font-semibold leading-[.86] tracking-[-.085em]">{item.title}</h1><p className="mt-8 max-w-xl text-lg leading-[1.65] text-[#1A1A1A]/65">{item.summary} We partnered with the team from first sketch to a resilient product in the hands of real people.</p></div><div className="aspect-[1.2]"><CaseVisual item={item} /></div></div><div className="mt-16 grid gap-8 border-t border-[#1A1A1A]/20 pt-8 md:grid-cols-3"><div><div className="mono-label text-[#1A1A1A]/50">Sector</div><div className="mt-3 text-lg">{item.industry}</div></div><div><div className="mono-label text-[#1A1A1A]/50">Capabilities</div><div className="mt-3 flex flex-wrap gap-2">{item.services.map(service => <span key={service} className="border border-[#1A1A1A]/20 px-2 py-1 mono-label text-[.56rem]">{service}</span>)}</div></div><div><div className="mono-label text-[#1A1A1A]/50">AttoLabs role</div><div className="mt-3 text-lg">Product, systems, and delivery partner</div></div></div></div></main></PageFrame></>;
 }
 
-function AboutPage({ locale = 'en' }: { locale?: Locale }) {
+function AboutPageLegacy({ locale = 'en' }: { locale?: Locale }) {
   return <><Meta locale={locale} page="about" /><PageFrame><main><div className="bg-[#F4ECE7] py-20 md:py-28"><div className="site-wrap"><SectionIntro tag="01 / Who we are" title={<>People who make<br /><span className="text-[#F0543D]">things clearer.</span></>}><span>We are an engineering studio for organizations doing consequential work. Small enough to care, experienced enough to make complexity useful.</span></SectionIntro></div></div><About /><Proof /></main></PageFrame></>;
+}
+
+function AboutPage({ locale = 'en' }: { locale?: Locale }) {
+  return <><Meta locale={locale} page="about" /><PageFrame><main><div className="bg-[#F4ECE7] py-20 md:py-28"><div className="site-wrap"><SectionIntro tag="01 / Who we are" title={<>People who make<br /><span className="text-[#F0543D]">things clearer.</span></>}><span>We are an engineering studio for organizations doing consequential work. Large enough to carry complexity, experienced enough to make it useful.</span></SectionIntro></div></div><Clients /><About /><Proof /></main></PageFrame></>;
 }
 
 function CooperationPage({ locale = 'en' }: { locale?: Locale }) {
