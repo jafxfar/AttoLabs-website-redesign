@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "AttoLabs — Engineers for AI Era"
+description = "A bold, editorial engineering studio website for AttoLabs, helping organizations discover relevant AI-era software services, industries, and case studies through an interactive experience."
+version = "1.0.0"
+id = "artifacts/attolabs-site"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 19556
+
+[services.development]
+run = "pnpm --filter @workspace/attolabs-site run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/attolabs-site", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/attolabs-site/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "19556"
+BASE_PATH = "/"
