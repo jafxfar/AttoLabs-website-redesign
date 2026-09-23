@@ -4,8 +4,6 @@ import {
   ArrowDownRight,
   ArrowRight,
   Check,
-  ChevronDown,
-  ChevronUp,
   Clock3,
   Code2,
   Globe2,
@@ -17,6 +15,7 @@ import {
   Zap,
 } from 'lucide-react';
 import { ErrorBoundary } from '@/components/error-boundary';
+import { Jobs } from '@/components/Jobs';
 import { Toaster } from '@/components/ui/toaster';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { Link, Route, Switch, useLocation, Router as WouterRouter } from 'wouter';
@@ -889,63 +888,6 @@ function About({ sectionTheme = 'coral' }: { sectionTheme?: SectionTheme }) {
 
 function AboutLegacy() {
   return <section id="about" className="bg-[#F4ECE7] py-24 md:py-36"><div className="site-wrap"><SectionIntro tag="05 / Who we are" title={<>Small enough<br />to <span className="text-[#F0543D]">care.</span></>}><span>AttoLabs is a distributed engineering studio for teams doing consequential work. We bring product thinking, systems discipline, and a healthy respect for the details.</span></SectionIntro><div className="mt-20 grid gap-8 md:grid-cols-[.9fr_1.1fr]"><div className="relative min-h-[340px] overflow-hidden bg-[#F0543D] p-7"><div className="absolute -right-12 -top-12 h-64 w-64 rounded-full border-[32px] border-[#F6D24A]" /><div className="absolute -bottom-16 -left-10 h-56 w-56 rounded-full border border-[#F4ECE7]/70" /><div className="relative flex h-full flex-col justify-between text-[#F4ECE7]"><div className="mono-label">We are / a useful distance away</div><div><div className="display-font text-5xl font-semibold leading-[.87] tracking-[-.08em]">The future<br />needs builders.</div><div className="mt-6 max-w-xs text-sm leading-relaxed text-[#F4ECE7]/75">Our team works across London, Lisbon, Toronto, and São Paulo.</div></div></div></div><div className="grid content-center gap-8 md:grid-cols-2 md:gap-x-12"><div><Code2 className="text-[#F0543D]" size={24} /><h3 className="display-font mt-5 text-xl font-semibold">Technical by default</h3><p className="mt-3 text-sm leading-[1.6] text-[#1A1A1A]/60">The people in the room are the people writing the software. Architecture is a conversation, not a handoff.</p></div><div><Globe2 className="text-[#F0543D]" size={24} /><h3 className="display-font mt-5 text-xl font-semibold">Different by design</h3><p className="mt-3 text-sm leading-[1.6] text-[#1A1A1A]/60">Distributed teams sharpen our thinking. Four perspectives, one shared standard for the work.</p></div><div><Sparkles className="text-[#F0543D]" size={24} /><h3 className="display-font mt-5 text-xl font-semibold">Curious, not careless</h3><p className="mt-3 text-sm leading-[1.6] text-[#1A1A1A]/60">We use AI as leverage, with the judgement to know where it belongs and where it doesn’t.</p></div><div><Clock3 className="text-[#F0543D]" size={24} /><h3 className="display-font mt-5 text-xl font-semibold">Built for the long run</h3><p className="mt-3 text-sm leading-[1.6] text-[#1A1A1A]/60">We leave systems clearer than we found them, so your team owns the next chapter.</p></div></div></div></div></section>;
-}
-
-function Jobs({ sectionTheme = 'coral' }: { sectionTheme?: SectionTheme }) {
-  const [expanded, setExpanded] = useState(false)
-  const accentClass = sectionAccentClass[sectionTheme]
-  return (
-    <section id="jobs" className="border-t border-[#1A1A1A]/20 bg-[#F4ECE7] py-24 md:py-32">
-      <Reveal className="site-wrap grid gap-10 md:grid-cols-[.8fr_1.2fr]">
-        <SectionTag>06 / Jobs</SectionTag>
-        <div>
-          <h2 className="display-font text-[clamp(2.8rem,6vw,5.8rem)] font-semibold leading-[.9] tracking-[-.075em]">
-            Make the<br /><span className={accentClass}>next thing.</span>
-          </h2>
-          <p className="mt-8 max-w-lg text-lg leading-[1.6] text-[#1A1A1A]/65">
-            We’re always interested in meeting people who care about how things work. Especially product-minded engineers, design engineers, and technical leads.
-          </p>
-          <button
-            onClick={() => setExpanded(!expanded)}
-            className="mt-8 flex items-center gap-3 border-b border-[#1A1A1A] pb-2 mono-label"
-            data-testid="button-open-roles"
-          >
-            {expanded ? 'Hide roles' : 'See how we work'}
-            {expanded ? <ChevronUp size={15} /> : <ChevronDown size={15} />}
-          </button>
-          <AnimatePresence>
-            {expanded && (
-              <motion.div
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: 'auto' }}
-                exit={{ opacity: 0, height: 0 }}
-                className="overflow-hidden"
-              >
-                <div className="mt-8 border-t border-[#1A1A1A]/20">
-                  {['Senior Product Engineer', 'Design Engineer', 'Technical Lead'].map((role) => (
-                    <div key={role} className="flex items-center justify-between border-b border-[#1A1A1A]/20 py-5">
-                      <div>
-                        <div className="display-font text-xl font-semibold">{role}</div>
-                        <div className="mt-1 mono-label text-[#1A1A1A]/45">Remote / full-time</div>
-                      </div>
-                      <a
-                        href="mailto:hello@attolabs.com?subject=Role enquiry"
-                        aria-label={`Apply for ${role}`}
-                        className="flex h-9 w-9 items-center justify-center border border-[#F0543D] bg-[#F0543D] text-[#F4ECE7] transition-colors hover:border-[#1A1A1A] hover:bg-[#1A1A1A]"
-                        data-testid={`link-apply-${role.toLowerCase().replaceAll(' ', '-')}`}
-                      >
-                        <ArrowRight size={16} />
-                      </a>
-                    </div>
-                  ))}
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
-      </Reveal>
-    </section>
-  )
 }
 
 function Contact({ sectionTheme = 'coral' }: { sectionTheme?: SectionTheme }) {
