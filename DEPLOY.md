@@ -3,7 +3,7 @@
 Vite SPA + Personio:
 
 - **Jobs list**: browser fetches public XML (`https://{subdomain}.jobs.personio.de/xml`) — no serverless needed (CORS `*`).
-- **Apply**: `api/apply.cjs` (CommonJS) → Personio Recruiting API. Uses `.cjs` so it works with root `"type": "module"`.
+- **Apply**: `api/apply.js` (CommonJS via `api/package.json` `"type": "commonjs"`) → Personio Recruiting API.
 
 Local development: `pnpm dev` (Vite + Hono on `:8787`, proxy `/api/apply`).
 

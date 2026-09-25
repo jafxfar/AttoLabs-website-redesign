@@ -1,7 +1,7 @@
 'use strict'
 
 const { Readable } = require('node:stream')
-const { submitPersonioApplication } = require('./lib/personio.cjs')
+const { submitPersonioApplication } = require('./lib/personio')
 
 const allowedCvTypes = new Set([
   'application/pdf',
