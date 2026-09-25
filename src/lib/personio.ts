@@ -1,3 +1,5 @@
+import { fetchPersonioJobsFromFeed } from '@/lib/personio-jobs'
+
 export type PersonioJobDescription = {
   name: string
   value: string
@@ -16,10 +18,6 @@ export type PersonioJob = {
   createdAt: string
 }
 
-export type JobsResponse = {
-  jobs: PersonioJob[]
-}
-
 export type ApplyResult =
   | { ok: true }
   | { ok: false; error: string; detail?: string }
@@ -32,19 +30,8 @@ export const formatJobMeta = (job: PersonioJob) => {
   return `${offices} / ${schedule}`
 }
 
-export const fetchJobs = async (language = 'en'): Promise<PersonioJob[]> => {
-  const response = await fetch(`/api/jobs?language=${encodeURIComponent(language)}`)
-  const data = (await response.json()) as JobsResponse & {
-    error?: string
-    detail?: string
-  }
-
-  if (!response.ok) {
-    throw new Error(data.error || data.detail || 'Failed to load jobs')
-  }
-
-  return data.jobs ?? []
-}
+export const fetchJobs = async (language = 'en'): Promise<PersonioJob[]> =>
+  fetchPersonioJobsFromFeed(language)
 
 export type ApplyInput = {
   jobPositionId: string
