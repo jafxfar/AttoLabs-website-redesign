@@ -124,7 +124,7 @@ export type ApplyPayload = {
   email: string
   message?: string
   cv: {
-    data: Buffer
+    data: Uint8Array
     filename: string
     contentType: string
   }
@@ -140,7 +140,8 @@ export const uploadPersonioDocument = async (
   file: ApplyPayload['cv'],
 ): Promise<UploadedDocument> => {
   const form = new FormData()
-  const blob = new Blob([new Uint8Array(file.data)], { type: file.contentType })
+  const bytes = new Uint8Array(file.data)
+  const blob = new Blob([bytes], { type: file.contentType })
   form.append('file', blob, file.filename)
 
   const response = await fetch(

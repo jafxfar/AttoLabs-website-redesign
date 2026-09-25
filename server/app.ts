@@ -3,7 +3,7 @@ import { cors } from 'hono/cors'
 import {
   fetchPersonioJobs,
   submitPersonioApplication,
-} from './personio.ts'
+} from './personio'
 
 const app = new Hono()
 
@@ -14,10 +14,21 @@ const getPersonioConfig = () => ({
   recruitingChannelId: process.env.PERSONIO_RECRUITING_CHANNEL_ID || '',
 })
 
+app.onError((error, c) => {
+  console.error('[api]', error)
+  return c.json(
+    {
+      error: 'Internal server error',
+      detail: error instanceof Error ? error.message : 'Unknown error',
+    },
+    500,
+  )
+})
+
 app.use(
   '/api/*',
   cors({
-    origin: (origin) => origin || '*',
+    origin: '*',
     allowMethods: ['GET', 'POST', 'OPTIONS'],
   }),
 )
@@ -113,7 +124,7 @@ app.post('/api/apply', async (c) => {
     }
 
     const maxBytes = 20 * 1024 * 1024
-    const buffer = Buffer.from(await file.arrayBuffer())
+    const buffer = new Uint8Array(await file.arrayBuffer())
     if (buffer.byteLength > maxBytes) {
       return c.json({ error: 'CV must be 20MB or smaller' }, 400)
     }
