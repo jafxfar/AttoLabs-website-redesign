@@ -24,95 +24,113 @@ import NotFound from '@/pages/not-found';
 type Locale = 'en' | 'ru' | 'de';
 
 type CaseStudy = {
-  id: string;
-  title: string;
-  client: string;
-  industry: string;
-  services: string[];
-  summary: string;
-  accent: string;
-  secondary: string;
-  art: 'grid' | 'ribbon' | 'nodes' | 'bars';
-};
+  id: string
+  title: string
+  client: string
+  industry: string
+  services: string[]
+  summary: string
+  accent: string
+  secondary: string
+  art: 'grid' | 'ribbon' | 'nodes' | 'bars'
+  image?: string
+}
+
+type ClientLogo = {
+  name: string
+  logo: string
+}
 
 const caseStudies: CaseStudy[] = [
   {
-    id: 'northstar',
-    title: 'A clearer signal for every route',
-    client: 'Northstar Energy',
-    industry: 'Energy & Utilities',
-    services: ['Custom Software', 'Cloud Development'],
-    summary: 'A live operations platform that turns a decade of grid data into decisions in minutes.',
-    accent: '#F0543D',
-    secondary: '#F6D24A',
-    art: 'grid',
-  },
-  {
-    id: 'liminal',
-    title: 'Banking, rebuilt for real life',
-    client: 'Liminal Bank',
+    id: 'inaia',
+    title: 'Web application for INAIA FinTech',
+    client: 'INAIA',
     industry: 'Banking',
-    services: ['Digital Transformation', 'Mobile Development'],
-    summary: 'A composable banking experience for 2.4m customers, designed around their actual financial days.',
+    services: ['Web Development', 'Digital Transformation'],
+    summary:
+      'Includes the development of two elements: a comprehensive goal calculator and an investment platform. The former allows users to plan their financial goals, while the latter provides the opportunity to invest in Islamic-compliant savings and investment products across Europe.',
     accent: '#D2D4FE',
     secondary: '#373A72',
     art: 'ribbon',
+    image: '/cases/inaia.jpg',
   },
   {
-    id: 'atlas',
-    title: 'The map behind the movement',
-    client: 'Atlas Logistics',
-    industry: 'Logistics',
-    services: ['Web Development', 'MVP Development'],
-    summary: 'A control tower for complex supply chains that makes every handoff visible.',
-    accent: '#B9E3D2',
-    secondary: '#164B40',
-    art: 'nodes',
+    id: 'smart-heat',
+    title: 'Smart Heating Control System',
+    client: 'Energy & Utilities',
+    industry: 'Energy & Utilities',
+    services: ['Cloud Deployment', 'MVP Development'],
+    summary:
+      'The heating control system developed from October 2021 to May 2022 uses ESP32 and FreeRTOS modules in C and Python. It uses a variety of protocols to intelligently monitor and control residential heating, taking into account indoor and outdoor temperatures.',
+    accent: '#F0543D',
+    secondary: '#F6D24A',
+    art: 'grid',
+    image: '/cases/smart-heat.jpg',
   },
   {
-    id: 'civic',
-    title: 'Public services, made legible',
-    client: 'Civic Futures',
-    industry: 'Government',
-    services: ['Custom Software', 'Digital Transformation'],
-    summary: 'A language-first casework system that helps frontline teams resolve cases with confidence.',
-    accent: '#F8D1C8',
-    secondary: '#F0543D',
+    id: 'street-lighting',
+    title: 'Street lighting control system',
+    client: 'Energy & Utilities',
+    industry: 'Energy & Utilities',
+    services: ['Cloud Deployment', 'MVP Development'],
+    summary:
+      'The streetlight control system, built between February and October 2020, uses ESP32 and FreeRTOS modules. It autonomously controls streetlights according to a schedule related to sunset and sunrise and collects telemetry for real-time monitoring.',
+    accent: '#F6D24A',
+    secondary: '#1A1A1A',
     art: 'bars',
+    image: '/cases/street-lighting.jpg',
   },
   {
-    id: 'morrow',
-    title: 'A new standard for learning',
-    client: 'Morrow Education',
+    id: 'aat',
+    title: 'Mobile app for kids with autism (AAT)',
+    client: 'Education',
     industry: 'Education',
-    services: ['Cloud Development', 'Web Development'],
-    summary: 'Cloud infrastructure and tools that give educators more time for the human work.',
+    services: ['Mobile Development'],
+    summary:
+      'AAT is a mobile learning app for children with Autism Spectrum Disorder (ASD)—an educational platform that lets children interact with sound cards to develop communication skills, with the ability to track progress.',
     accent: '#F4B9C8',
     secondary: '#792A4F',
     art: 'ribbon',
+    image: '/cases/aat.jpg',
   },
   {
-    id: 'vita',
-    title: 'From data to better care',
-    client: 'Vita Life Sciences',
-    industry: 'Life Sciences',
-    services: ['Custom Software', 'Cloud Development'],
-    summary: 'A secure research workspace connecting teams, evidence, and the next breakthrough.',
+    id: 'mar-taxi',
+    title: 'Online Taxi Service for MAR Taxi',
+    client: 'MAR Taxi GmbH',
+    industry: 'Logistics',
+    services: ['Web Development', 'Mobile Development'],
+    summary:
+      'Development of a web-based taxi booking platform for MAR Taxi GmbH in Germany to improve customer experience through a user-friendly online booking tool, optimised for mobile devices and different passenger needs.',
+    accent: '#B9E3D2',
+    secondary: '#164B40',
+    art: 'nodes',
+    image: '/cases/mar-taxi.jpg',
+  },
+  {
+    id: 'edp',
+    title: 'Environmental Data Reporting Portal (EDP)',
+    client: 'EU Environment Agency',
+    industry: 'Government',
+    services: ['Digital Transformation', 'Web Development'],
+    summary:
+      'Developed for the EU Environment Agency to simplify reporting by facility operators under environmental regulations. Includes multiple modules for different reporting requirements, compliance, and data integrity.',
     accent: '#C3D6F4',
     secondary: '#234A85',
     art: 'grid',
+    image: '/cases/edp.jpg',
   },
-];
+]
 
 const services = [
   'All services',
-  'Cloud Development',
-  'Custom Software',
+  'AI Integration',
   'Digital Transformation',
-  'Mobile Development',
+  'Cloud Deployment',
   'MVP Development',
+  'Mobile Development',
   'Web Development',
-];
+]
 
 const industries = [
   'All industries',
@@ -123,22 +141,45 @@ const industries = [
   'Government',
   'Life Sciences',
   'Logistics',
-];
+]
 
-const clients = [
-  'World Health Organization',
-  'Worldline',
-  'Nexi',
-  'Bechtle',
-  'Lund University',
-  'Dublin City University',
-  'IT Park Uzbekistan',
-  'INAIA',
-  'umlaut',
-  'LBTU',
-  'Marmara Teknopark',
-  'Axxessio',
-];
+const clients: ClientLogo[] = [
+  { name: 'Bechtle', logo: '/clients/bechtle.svg' },
+  { name: 'INAIA', logo: '/clients/inaia.png' },
+  { name: 'Dublin City University', logo: '/clients/dcu.png' },
+  { name: 'umlaut', logo: '/clients/umlaut.svg' },
+  { name: 'World Health Organization', logo: '/clients/who.svg' },
+  { name: 'Lund University', logo: '/clients/lund.svg' },
+  { name: 'Worldline', logo: '/clients/worldline.svg' },
+  { name: 'Marmara Teknopark', logo: '/clients/marmara.png' },
+  { name: 'Axxessio', logo: '/clients/axxessio.svg' },
+  { name: 'Nexi', logo: '/clients/nexi.svg' },
+  { name: 'LBTU', logo: '/clients/lbtu.svg' },
+  { name: 'IT Park Uzbekistan', logo: '/clients/itpark.png' },
+]
+
+const offices = [
+  {
+    region: 'Switzerland',
+    address: 'Alte Gfennstrasse 16, 8600 Dübendorf (Zürich)',
+    phones: ['+41 76 565 41 71'],
+  },
+  {
+    region: 'Germany',
+    address: 'Freiligrathstraße 31, 50935 Köln',
+    phones: ['+49 176 4445 0770', '+49 2238 4780 6118'],
+  },
+  {
+    region: 'Türkiye',
+    address: 'Cuma Yolu Caddesi Göksu Mah, 34815 Beykoz, İstanbul',
+    phones: ['+90 552 724 93 38'],
+  },
+  {
+    region: 'Uzbekistan',
+    address: 'st. Afrosiyob 8A, BC Dmaar office 708, 100031 Tashkent',
+    phones: ['+998 93 652 87 05'],
+  },
+]
 
 type SectionTheme = 'coral' | 'yellow' | 'green' | 'blue'
 
@@ -389,16 +430,15 @@ function StaggerItem({
 }
 
 function BrandMark({ light = false }: { light?: boolean }) {
-  const color = light ? '#F4ECE7' : '#1A1A1A';
   return (
-    <svg width="30" height="30" viewBox="0 0 30 30" aria-label="AttoLabs rotor mark" role="img">
-      <g fill="none" stroke={color} strokeWidth="2.3" strokeLinecap="square">
-        <path d="M15 2v9M15 19v9M2 15h9M19 15h9" />
-        <path d="m5.8 5.8 6.4 6.4M17.8 17.8l6.4 6.4M24.2 5.8l-6.4 6.4M12.2 17.8l-6.4 6.4" />
-      </g>
-      <circle cx="15" cy="15" r="3.1" fill="#F0543D" />
-    </svg>
-  );
+    <img
+      src="/brand/attolabs-icon.png"
+      alt="AttoLabs"
+      width={32}
+      height={32}
+      className={`h-8 w-8 object-contain ${light ? 'brightness-0 invert' : ''}`}
+    />
+  )
 }
 
 function SectionTag({ children, light = false }: { children: ReactNode; light?: boolean }) {
@@ -610,7 +650,9 @@ function Hero() {
           <h1 className="display-font mt-8 text-[clamp(4.2rem,10.7vw,9.5rem)] font-semibold leading-[.84] tracking-[-.085em]">
             Engineers<br /><span className="text-[#1A1A1A]">for AI</span><br />Era<span className="text-[#F6D24A]">.</span>
           </h1>
-          <p className="mt-10 max-w-[500px] text-[1.08rem] leading-[1.65] text-[#F4ECE7]/85">AttoLabs helps organizations turn ideas into AI-enabled software. Practical, scalable, and ready for the future.</p>
+          <p className="mt-10 max-w-[500px] text-[1.08rem] leading-[1.65] text-[#F4ECE7]/85">
+            AttoLabs helps organizations turn ideas into AI-enabled software. From cloud-native platforms to custom applications, we build solutions that are practical, scalable and ready for the future.
+          </p>
           <div className="mt-10 flex flex-wrap gap-3">
             <ButtonLink href="/cases">Explore our work</ButtonLink>
             <Link href="/cooperation" className="group inline-flex items-center gap-3 px-4 py-3.5 mono-label text-[#F4ECE7] hover:text-[#F6D24A]" data-testid="link-hero-contact">Tell us what’s next <ArrowDownRight size={17} className="transition-transform group-hover:translate-y-1 group-hover:translate-x-1" /></Link>
@@ -661,6 +703,17 @@ function FilterChip({ active, children, onClick }: { active: boolean; children: 
 }
 
 function CaseVisual({ item }: { item: CaseStudy }) {
+  if (item.image) {
+    return (
+      <div className="relative h-full w-full overflow-hidden bg-[#1A1A1A]">
+        <img
+          src={item.image}
+          alt={item.title}
+          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+        />
+      </div>
+    )
+  }
   if (item.art === 'grid') return <div className="relative h-full w-full overflow-hidden" style={{ background: item.secondary }}><div className="absolute inset-0 opacity-40" style={{ backgroundImage: `linear-gradient(${item.accent} 1px,transparent 1px),linear-gradient(90deg,${item.accent} 1px,transparent 1px)`, backgroundSize: '27px 27px' }} /><div className="absolute left-1/2 top-1/2 h-32 w-32 -translate-x-1/2 -translate-y-1/2 rounded-full border-[17px]" style={{ borderColor: item.accent }} /><div className="absolute left-1/2 top-1/2 h-3 w-3 -translate-x-1/2 -translate-y-1/2" style={{ background: item.accent }} /></div>;
   if (item.art === 'bars') return <div className="relative h-full w-full overflow-hidden p-7" style={{ background: item.accent }}><div className="flex h-full items-end gap-2">{[.35,.58,.48,.78,.63,.93,.71,.86].map((height, i) => <div key={i} className="flex-1" style={{ height: `${height * 100}%`, background: i % 3 === 0 ? item.secondary : '#F4ECE7' }} />)}</div><div className="absolute left-7 top-7 mono-label" style={{ color: item.secondary }}>case / {item.id}</div></div>;
   if (item.art === 'nodes') return <div className="relative h-full w-full overflow-hidden" style={{ background: item.secondary }}><svg viewBox="0 0 400 300" className="h-full w-full"><path d="M10 230 95 155l72 37 69-103 75 76 78-124" stroke={item.accent} strokeWidth="2" fill="none" /><path d="M10 230 95 155l72 37 69-103 75 76 78-124" stroke={item.accent} strokeWidth="14" strokeDasharray="1 30" strokeLinecap="round" fill="none" /><g fill={item.accent}>{[[10,230],[95,155],[167,192],[236,89],[311,165],[389,41]].map(([x,y]) => <circle key={`${x}-${y}`} cx={x} cy={y} r="8" />)}</g></svg><div className="absolute left-6 top-6 mono-label" style={{ color: item.accent }}>network / visible</div></div>;
@@ -810,20 +863,22 @@ function Clients({ sectionTheme = 'coral' }: { sectionTheme?: SectionTheme }) {
         <Reveal>
           <SectionIntro
             tag="05 / Clients"
-            title={<>Trusted by teams<br /><span className={accentClass}>doing consequential work.</span></>}
+            title={<>We are proud to be<br /><span className={accentClass}>a partner to our clients.</span></>}
           >
             <span>From global health and financial infrastructure to universities and technology leaders, we work with teams where software has something real to carry.</span>
           </SectionIntro>
         </Reveal>
-        <Stagger className="mt-16 grid border-t border-[#1A1A1A]/20 md:grid-cols-4">
+        <Stagger className="mt-16 grid grid-cols-2 border-t border-[#1A1A1A]/20 sm:grid-cols-3 md:grid-cols-4">
           {clients.map((client, index) => (
             <StaggerItem
-              key={client}
-              className={`flex min-h-28 items-center border-b border-[#1A1A1A]/20 py-7 md:px-6 ${index % 4 !== 3 ? 'md:border-r' : ''} ${index < 4 ? 'md:pt-8' : ''}`}
+              key={client.name}
+              className={`flex min-h-28 items-center justify-center border-b border-[#1A1A1A]/20 px-5 py-8 md:px-6 ${index % 4 !== 3 ? 'md:border-r' : ''} ${index % 2 !== 1 ? 'border-r sm:border-r' : 'sm:border-r-0'} ${index % 3 !== 2 ? 'sm:border-r' : ''} ${index < 4 ? 'md:pt-8' : ''}`}
             >
-              <span className="display-font text-[1.35rem] font-semibold leading-none tracking-[-.045em] text-[#1A1A1A]/80 md:text-[1.55rem]">
-                {client}
-              </span>
+              <img
+                src={client.logo}
+                alt={client.name}
+                className="max-h-10 w-auto max-w-[140px] object-contain opacity-80 grayscale transition-all duration-300 hover:opacity-100 hover:grayscale-0 md:max-h-12 md:max-w-[160px]"
+              />
             </StaggerItem>
           ))}
         </Stagger>
@@ -853,7 +908,7 @@ function About({ sectionTheme = 'coral' }: { sectionTheme?: SectionTheme }) {
                 <div className="mono-label">We are / a wide orbit</div>
                 <div>
                   <div className="display-font text-5xl font-semibold leading-[.87] tracking-[-.08em]">The future<br />needs builders.</div>
-                  <div className="mt-6 max-w-xs text-sm leading-relaxed text-[#F4ECE7]/75">A large distributed team working across London, Lisbon, Toronto, and São Paulo.</div>
+                  <div className="mt-6 max-w-xs text-sm leading-relaxed text-[#F4ECE7]/75">A distributed team across Switzerland, Germany, Türkiye, and Uzbekistan.</div>
                 </div>
               </div>
             </div>
@@ -915,6 +970,31 @@ function Contact({ sectionTheme = 'coral' }: { sectionTheme?: SectionTheme }) {
           <p className="mt-9 max-w-md text-lg leading-[1.6]" style={{ color: tokens.muted }}>
             Bring us the hard problem, the half-formed idea, or the thing your team can’t stop thinking about. We’ll bring questions.
           </p>
+          <a
+            href="mailto:contact@attolabs.eu"
+            className="mt-8 inline-block mono-label underline underline-offset-4"
+            style={{ color: tokens.accent }}
+          >
+            contact@attolabs.eu
+          </a>
+          <div className="mt-10 grid gap-5 sm:grid-cols-2">
+            {offices.map((office) => (
+              <div key={office.region}>
+                <div className="mono-label" style={{ color: tokens.accent }}>{office.region}</div>
+                <p className="mt-2 text-sm leading-relaxed" style={{ color: tokens.muted }}>{office.address}</p>
+                {office.phones.map((phone) => (
+                  <a
+                    key={phone}
+                    href={`tel:${phone.replace(/\s/g, "")}`}
+                    className="mt-1 block text-sm hover:underline"
+                    style={{ color: tokens.muted }}
+                  >
+                    {phone}
+                  </a>
+                ))}
+              </div>
+            ))}
+          </div>
           <div className="mt-12 flex items-center gap-3 mono-label" style={{ color: tokens.muted }}>
             <span className="status-pulse h-2 w-2 rounded-full bg-[#F0543D]" />
             Usually reply within two working days
@@ -1002,7 +1082,52 @@ function Contact({ sectionTheme = 'coral' }: { sectionTheme?: SectionTheme }) {
 }
 
 function Footer() {
-  return <footer className="bg-[#1A1A1A] py-8 text-[#F4ECE7]"><div className="site-wrap flex flex-col gap-8 md:flex-row md:items-end md:justify-between"><div><Link href="/" className="flex items-center gap-2.5" data-testid="link-footer-home"><BrandMark light /><span className="display-font text-[1.14rem] font-bold tracking-[-.04em]">AttoLabs</span></Link><p className="mt-4 max-w-xs text-sm leading-relaxed text-[#F4ECE7]/45">Engineering for the AI era, from idea to impact.</p></div><div className="flex flex-wrap gap-x-6 gap-y-3 mono-label text-[#F4ECE7]/55"><Link href="/cases" className="hover:text-[#F6D24A]">Work</Link><Link href="/about" className="hover:text-[#F6D24A]">About</Link><Link href="/careers" className="hover:text-[#F6D24A]">Jobs</Link><Link href="/cooperation" className="hover:text-[#F6D24A]">Contact</Link><a href="mailto:hello@attolabs.com" className="hover:text-[#F6D24A]">hello@attolabs.com</a></div><div className="mono-label text-[#F4ECE7]/35">© 2026 AttoLabs</div></div></footer>;
+  return (
+    <footer className="bg-[#1A1A1A] py-10 text-[#F4ECE7]">
+      <div className="site-wrap flex flex-col gap-10">
+        <div className="flex flex-col gap-8 md:flex-row md:items-start md:justify-between">
+          <div>
+            <Link href="/" className="flex items-center gap-2.5" data-testid="link-footer-home">
+              <BrandMark light />
+              <span className="display-font text-[1.14rem] font-bold tracking-[-.04em]">AttoLabs</span>
+            </Link>
+            <p className="mt-4 max-w-xs text-sm leading-relaxed text-[#F4ECE7]/45">
+              We turn ideas into AI-enabled software — practical, scalable, and built for real impact.
+            </p>
+            <a href="mailto:contact@attolabs.eu" className="mt-4 inline-block mono-label text-[#F6D24A] hover:underline">
+              contact@attolabs.eu
+            </a>
+          </div>
+          <div className="flex flex-wrap gap-x-6 gap-y-3 mono-label text-[#F4ECE7]/55">
+            <Link href="/cases" className="hover:text-[#F6D24A]">Work</Link>
+            <Link href="/about" className="hover:text-[#F6D24A]">About</Link>
+            <Link href="/careers" className="hover:text-[#F6D24A]">Jobs</Link>
+            <Link href="/cooperation" className="hover:text-[#F6D24A]">Contact</Link>
+          </div>
+        </div>
+        <div className="grid gap-6 border-t border-[#F4ECE7]/10 pt-8 sm:grid-cols-2 lg:grid-cols-4">
+          {offices.map((office) => (
+            <div key={office.region}>
+              <div className="mono-label text-[#F6D24A]">{office.region}</div>
+              <p className="mt-2 text-sm leading-relaxed text-[#F4ECE7]/55">{office.address}</p>
+              <div className="mt-2 flex flex-col gap-1">
+                {office.phones.map((phone) => (
+                  <a
+                    key={phone}
+                    href={`tel:${phone.replace(/\s/g, "")}`}
+                    className="inline-block text-sm text-[#F4ECE7]/70 hover:text-[#F6D24A]"
+                  >
+                    {phone}
+                  </a>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className="mono-label text-[#F4ECE7]/35">© 2026 AttoLabs</div>
+      </div>
+    </footer>
+  )
 }
 
 function PageFrame({ children }: { children: ReactNode }) {
