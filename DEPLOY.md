@@ -27,10 +27,13 @@ Do **not** commit `.env`.
 
 Redeploy after changing env vars. `VITE_*` is baked in at **build** time.
 
-## 4. Verify
+After deploy, check:
 
-- `/careers` → See open roles (Network: `jobs.personio.de/xml`, not `/api/jobs`).
-- Apply with a small CV → candidate appears in Personio.
+1. `https://YOUR_PROJECT.vercel.app/api/health` → `{"ok":true,"runtime":"node"}`
+2. `/careers` → roles load from `*.jobs.personio.de/xml` (not `/api/jobs`)
+3. Apply with a small CV
+
+If `/api/health` also fails with FUNCTION_INVOCATION_FAILED, set Vercel env `NODEJS_HELPERS=0` and redeploy.
 
 ## 5. Limits (Hobby)
 

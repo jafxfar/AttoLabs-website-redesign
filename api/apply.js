@@ -1,51 +1,141 @@
 'use strict'
 
-const { Readable } = require('node:stream')
-const { submitPersonioApplication } = require('./lib/personio')
-
-const allowedCvTypes = new Set([
-  'application/pdf',
-  'application/msword',
-  'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-  'text/plain',
-  'image/jpeg',
-  'image/png',
-])
+const Busboy = require('busboy')
 
 const allowedCvExtensions = /\.(pdf|doc|docx|txt|jpg|jpeg|png)$/i
 
 const sendJson = (res, status, body) => {
-  if (typeof res.status === 'function' && typeof res.json === 'function') {
-    return res.status(status).json(body)
+  try {
+    if (typeof res.status === 'function' && typeof res.json === 'function') {
+      return res.status(status).json(body)
+    }
+  } catch (_) {
+    /* fall through */
   }
   res.statusCode = status
   res.setHeader('Content-Type', 'application/json')
   return res.end(JSON.stringify(body))
 }
 
-const toWebRequest = (req) => {
-  const host =
-    req.headers['x-forwarded-host'] || req.headers.host || 'localhost'
-  const proto = req.headers['x-forwarded-proto'] || 'https'
-  const url = `${proto}://${host}${req.url || '/api/apply'}`
+const parseMultipart = (req) =>
+  new Promise((resolve, reject) => {
+    const fields = {}
+    /** @type {{ data: Buffer, filename: string, mimeType: string } | null} */
+    let cv = null
 
-  const headers = new Headers()
-  for (const [key, value] of Object.entries(req.headers)) {
-    if (!value) continue
-    headers.set(key, Array.isArray(value) ? value.join(',') : value)
-  }
+    let busboy
+    try {
+      busboy = Busboy({ headers: req.headers })
+    } catch (error) {
+      reject(error)
+      return
+    }
 
-  const method = req.method || 'POST'
-  if (method === 'GET' || method === 'HEAD') {
-    return new Request(url, { method, headers })
-  }
+    busboy.on('file', (name, file, info) => {
+      const chunks = []
+      file.on('data', (chunk) => chunks.push(chunk))
+      file.on('limit', () => {
+        reject(new Error('CV file too large'))
+      })
+      file.on('end', () => {
+        if (name === 'cv') {
+          cv = {
+            data: Buffer.concat(chunks),
+            filename: info.filename || 'cv.pdf',
+            mimeType: info.mimeType || 'application/octet-stream',
+          }
+        } else {
+          file.resume()
+        }
+      })
+    })
 
-  return new Request(url, {
-    method,
-    headers,
-    body: Readable.toWeb(req),
-    duplex: 'half',
+    busboy.on('field', (name, value) => {
+      fields[name] = value
+    })
+
+    busboy.on('error', reject)
+    busboy.on('finish', () => resolve({ fields, cv }))
+
+    req.pipe(busboy)
   })
+
+const personioHeaders = (companyId, accessToken) => ({
+  Authorization: `Bearer ${accessToken}`,
+  'X-Company-ID': companyId,
+})
+
+const submitToPersonio = async ({
+  companyId,
+  accessToken,
+  recruitingChannelId,
+  firstName,
+  lastName,
+  email,
+  message,
+  jobPositionId,
+  cv,
+}) => {
+  const form = new FormData()
+  form.append(
+    'file',
+    new Blob([new Uint8Array(cv.data)], { type: cv.mimeType }),
+    cv.filename,
+  )
+
+  const uploadRes = await fetch(
+    'https://api.personio.de/v1/recruiting/applications/documents',
+    {
+      method: 'POST',
+      headers: personioHeaders(companyId, accessToken),
+      body: form,
+    },
+  )
+
+  if (!uploadRes.ok) {
+    const detail = await uploadRes.text()
+    throw new Error(`Document upload failed (${uploadRes.status}): ${detail}`)
+  }
+
+  const uploaded = await uploadRes.json()
+
+  const body = {
+    first_name: firstName,
+    last_name: lastName,
+    email,
+    job_position_id: jobPositionId,
+    files: [
+      {
+        uuid: uploaded.uuid,
+        original_filename: uploaded.original_filename || cv.filename,
+        category: 'cv',
+      },
+    ],
+  }
+
+  if (message) body.message = message
+
+  if (recruitingChannelId) {
+    const channelId = Number(recruitingChannelId)
+    if (!Number.isNaN(channelId)) body.recruiting_channel_id = channelId
+  }
+
+  const applyRes = await fetch(
+    'https://api.personio.de/v1/recruiting/applications',
+    {
+      method: 'POST',
+      headers: {
+        ...personioHeaders(companyId, accessToken),
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    },
+  )
+
+  if (applyRes.status !== 201) {
+    const detail = await applyRes.text()
+    throw new Error(`Application failed (${applyRes.status}): ${detail}`)
+  }
 }
 
 async function handler(req, res) {
@@ -70,20 +160,18 @@ async function handler(req, res) {
   if (!companyId || !accessToken) {
     return sendJson(res, 503, {
       error:
-        'Personio credentials are not configured. Set PERSONIO_COMPANY_ID and PERSONIO_ACCESS_TOKEN',
+        'Personio credentials are not configured. Set PERSONIO_COMPANY_ID and PERSONIO_ACCESS_TOKEN in Vercel env.',
     })
   }
 
   try {
-    const request = toWebRequest(req)
-    const form = await request.formData()
+    const { fields, cv } = await parseMultipart(req)
 
-    const firstName = String(form.get('first_name') || '').trim()
-    const lastName = String(form.get('last_name') || '').trim()
-    const email = String(form.get('email') || '').trim()
-    const message = String(form.get('message') || '').trim()
-    const jobPositionId = Number(form.get('job_position_id'))
-    const cv = form.get('cv')
+    const firstName = String(fields.first_name || '').trim()
+    const lastName = String(fields.last_name || '').trim()
+    const email = String(fields.email || '').trim()
+    const message = String(fields.message || '').trim()
+    const jobPositionId = Number(fields.job_position_id)
 
     if (!firstName || !lastName || !email || Number.isNaN(jobPositionId)) {
       return sendJson(res, 400, {
@@ -96,60 +184,40 @@ async function handler(req, res) {
       return sendJson(res, 400, { error: 'Invalid email address' })
     }
 
-    if (!(cv instanceof File)) {
+    if (!cv || !cv.data || cv.data.length === 0) {
       return sendJson(res, 400, { error: 'CV file is required' })
     }
 
-    const filename = cv.name || 'cv.pdf'
-
-    if (!allowedCvExtensions.test(filename)) {
+    if (!allowedCvExtensions.test(cv.filename)) {
       return sendJson(res, 400, {
         error: 'CV must be pdf, doc, docx, txt, jpg, or png',
       })
     }
 
-    if (
-      cv.type &&
-      !allowedCvTypes.has(cv.type) &&
-      cv.type !== 'application/octet-stream'
-    ) {
+    if (cv.data.length > 4.5 * 1024 * 1024) {
       return sendJson(res, 400, {
-        error: `Unsupported CV content type: ${cv.type}`,
+        error: 'CV must be under 4.5MB on Vercel Hobby',
       })
     }
 
-    const maxBytes = 20 * 1024 * 1024
-    const data = new Uint8Array(await cv.arrayBuffer())
-    if (data.byteLength > maxBytes) {
-      return sendJson(res, 400, { error: 'CV must be 20MB or smaller' })
-    }
-
-    await submitPersonioApplication(
-      {
-        companyId,
-        accessToken,
-        recruitingChannelId: recruitingChannelId || undefined,
-      },
-      {
-        jobPositionId,
-        firstName,
-        lastName,
-        email,
-        message: message || undefined,
-        cv: {
-          data,
-          filename,
-          contentType: cv.type || 'application/octet-stream',
-        },
-      },
-    )
+    await submitToPersonio({
+      companyId,
+      accessToken,
+      recruitingChannelId,
+      firstName,
+      lastName,
+      email,
+      message: message || undefined,
+      jobPositionId,
+      cv,
+    })
 
     return sendJson(res, 201, { ok: true })
   } catch (error) {
     console.error('[api/apply]', error)
     return sendJson(res, 502, {
       error: 'Failed to submit application to Personio',
-      detail: error instanceof Error ? error.message : 'Unknown error',
+      detail: error instanceof Error ? error.message : String(error),
     })
   }
 }

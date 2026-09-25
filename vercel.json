@@ -3,12 +3,6 @@
   "buildCommand": "pnpm build",
   "outputDirectory": "dist",
   "framework": "vite",
-  "functions": {
-    "api/apply.js": {
-      "maxDuration": 30,
-      "includeFiles": "api/lib/**"
-    }
-  },
   "rewrites": [
     {
       "source": "/((?!api/).*)",
