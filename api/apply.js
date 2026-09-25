@@ -1,16 +1,42 @@
 'use strict'
 
-const Busboy = require('busboy')
+console.log('[api/apply] module evaluating', {
+  node: process.version,
+  cwd: process.cwd(),
+})
+
+let Busboy
+try {
+  Busboy = require('busboy')
+  console.log('[api/apply] busboy loaded ok')
+} catch (error) {
+  console.error('[api/apply] FAILED to require busboy', error)
+  // Still export a handler so the client gets a JSON error instead of
+  // opaque FUNCTION_INVOCATION_FAILED when possible.
+  module.exports = function handler(_req, res) {
+    const payload = {
+      error: 'Function failed to load dependency: busboy',
+      detail: error instanceof Error ? error.message : String(error),
+      stack: error instanceof Error ? error.stack : undefined,
+    }
+    res.statusCode = 500
+    res.setHeader('Content-Type', 'application/json')
+    res.end(JSON.stringify(payload))
+  }
+  module.exports.config = { api: { bodyParser: false }, maxDuration: 30 }
+  return
+}
 
 const allowedCvExtensions = /\.(pdf|doc|docx|txt|jpg|jpeg|png)$/i
 
 const sendJson = (res, status, body) => {
+  console.log('[api/apply] response', { status, error: body && body.error })
   try {
     if (typeof res.status === 'function' && typeof res.json === 'function') {
       return res.status(status).json(body)
     }
-  } catch (_) {
-    /* fall through */
+  } catch (error) {
+    console.error('[api/apply] res.status/json failed, using raw end', error)
   }
   res.statusCode = status
   res.setHeader('Content-Type', 'application/json')
@@ -19,19 +45,28 @@ const sendJson = (res, status, body) => {
 
 const parseMultipart = (req) =>
   new Promise((resolve, reject) => {
+    console.log('[api/apply] parseMultipart start', {
+      contentType: req.headers['content-type'],
+      contentLength: req.headers['content-length'],
+    })
+
     const fields = {}
-    /** @type {{ data: Buffer, filename: string, mimeType: string } | null} */
     let cv = null
 
     let busboy
     try {
-      busboy = Busboy({ headers: req.headers })
+      busboy = Busboy({
+        headers: req.headers,
+        limits: { fileSize: 5 * 1024 * 1024 },
+      })
     } catch (error) {
+      console.error('[api/apply] Busboy constructor failed', error)
       reject(error)
       return
     }
 
     busboy.on('file', (name, file, info) => {
+      console.log('[api/apply] file field', { name, filename: info.filename })
       const chunks = []
       file.on('data', (chunk) => chunks.push(chunk))
       file.on('limit', () => {
@@ -44,6 +79,10 @@ const parseMultipart = (req) =>
             filename: info.filename || 'cv.pdf',
             mimeType: info.mimeType || 'application/octet-stream',
           }
+          console.log('[api/apply] cv buffered', {
+            bytes: cv.data.length,
+            filename: cv.filename,
+          })
         } else {
           file.resume()
         }
@@ -52,10 +91,21 @@ const parseMultipart = (req) =>
 
     busboy.on('field', (name, value) => {
       fields[name] = value
+      console.log('[api/apply] field', { name, length: String(value).length })
     })
 
-    busboy.on('error', reject)
-    busboy.on('finish', () => resolve({ fields, cv }))
+    busboy.on('error', (error) => {
+      console.error('[api/apply] busboy error', error)
+      reject(error)
+    })
+
+    busboy.on('finish', () => {
+      console.log('[api/apply] parseMultipart finish', {
+        fieldKeys: Object.keys(fields),
+        hasCv: Boolean(cv),
+      })
+      resolve({ fields, cv })
+    })
 
     req.pipe(busboy)
   })
@@ -76,6 +126,7 @@ const submitToPersonio = async ({
   jobPositionId,
   cv,
 }) => {
+  console.log('[api/apply] personio document upload start')
   const form = new FormData()
   form.append(
     'file',
@@ -92,12 +143,15 @@ const submitToPersonio = async ({
     },
   )
 
+  console.log('[api/apply] personio document upload status', uploadRes.status)
+
   if (!uploadRes.ok) {
     const detail = await uploadRes.text()
     throw new Error(`Document upload failed (${uploadRes.status}): ${detail}`)
   }
 
   const uploaded = await uploadRes.json()
+  console.log('[api/apply] personio document uuid', uploaded.uuid)
 
   const body = {
     first_name: firstName,
@@ -120,6 +174,10 @@ const submitToPersonio = async ({
     if (!Number.isNaN(channelId)) body.recruiting_channel_id = channelId
   }
 
+  console.log('[api/apply] personio application create start', {
+    jobPositionId,
+  })
+
   const applyRes = await fetch(
     'https://api.personio.de/v1/recruiting/applications',
     {
@@ -132,6 +190,8 @@ const submitToPersonio = async ({
     },
   )
 
+  console.log('[api/apply] personio application status', applyRes.status)
+
   if (applyRes.status !== 201) {
     const detail = await applyRes.text()
     throw new Error(`Application failed (${applyRes.status}): ${detail}`)
@@ -139,6 +199,12 @@ const submitToPersonio = async ({
 }
 
 async function handler(req, res) {
+  console.log('[api/apply] invoke', {
+    method: req.method,
+    url: req.url,
+    hasHelpers: typeof res.status === 'function',
+  })
+
   res.setHeader('Access-Control-Allow-Origin', '*')
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS')
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type')
@@ -156,6 +222,14 @@ async function handler(req, res) {
   const companyId = process.env.PERSONIO_COMPANY_ID || ''
   const accessToken = process.env.PERSONIO_ACCESS_TOKEN || ''
   const recruitingChannelId = process.env.PERSONIO_RECRUITING_CHANNEL_ID || ''
+
+  console.log('[api/apply] env check', {
+    hasCompanyId: Boolean(companyId),
+    hasAccessToken: Boolean(accessToken),
+    hasChannelId: Boolean(recruitingChannelId),
+    companyIdLength: companyId.length,
+    tokenLength: accessToken.length,
+  })
 
   if (!companyId || !accessToken) {
     return sendJson(res, 503, {
@@ -214,10 +288,14 @@ async function handler(req, res) {
 
     return sendJson(res, 201, { ok: true })
   } catch (error) {
-    console.error('[api/apply]', error)
+    console.error('[api/apply] handler error', {
+      message: error instanceof Error ? error.message : String(error),
+      stack: error instanceof Error ? error.stack : undefined,
+    })
     return sendJson(res, 502, {
       error: 'Failed to submit application to Personio',
       detail: error instanceof Error ? error.message : String(error),
+      stack: error instanceof Error ? error.stack : undefined,
     })
   }
 }
@@ -230,3 +308,4 @@ handler.config = {
 }
 
 module.exports = handler
+console.log('[api/apply] module exports ready')
