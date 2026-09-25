@@ -1,49 +1,33 @@
-import { fetchPersonioJobs } from '../server/personio'
+import type { VercelRequest, VercelResponse } from '@vercel/node'
+import { fetchPersonioJobs } from './lib/personio'
 
-export const config = {
-  runtime: 'nodejs',
-  maxDuration: 30,
-}
+export default async function handler(
+  req: VercelRequest,
+  res: VercelResponse,
+) {
+  res.setHeader('Access-Control-Allow-Origin', '*')
+  res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS')
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type')
 
-const json = (body: unknown, status = 200) =>
-  new Response(JSON.stringify(body), {
-    status,
-    headers: {
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
-    },
-  })
-
-export default async function handler(request: Request): Promise<Response> {
-  if (request.method === 'OPTIONS') {
-    return new Response(null, {
-      status: 204,
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'GET, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type',
-      },
-    })
+  if (req.method === 'OPTIONS') {
+    return res.status(204).end()
   }
 
-  if (request.method !== 'GET') {
-    return json({ error: 'Method not allowed' }, 405)
+  if (req.method !== 'GET') {
+    return res.status(405).json({ error: 'Method not allowed' })
   }
 
   try {
-    const url = new URL(request.url)
-    const language = url.searchParams.get('language') || 'en'
+    const language =
+      typeof req.query.language === 'string' ? req.query.language : 'en'
     const subdomain = process.env.PERSONIO_COMPANY_SUBDOMAIN || 'attolabs'
     const jobs = await fetchPersonioJobs(subdomain, language)
-    return json({ jobs })
+    return res.status(200).json({ jobs })
   } catch (error) {
     console.error('[api/jobs]', error)
-    return json(
-      {
-        error: 'Failed to load jobs from Personio',
-        detail: error instanceof Error ? error.message : 'Unknown error',
-      },
-      502,
-    )
+    return res.status(502).json({
+      error: 'Failed to load jobs from Personio',
+      detail: error instanceof Error ? error.message : 'Unknown error',
+    })
   }
 }

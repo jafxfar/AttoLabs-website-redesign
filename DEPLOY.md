@@ -1,9 +1,11 @@
 # Deploy to Vercel
 
-This project is a Vite SPA with Personio API routes as Vercel Serverless Functions:
+This project is a Vite SPA with Personio API routes as classic Vercel Node functions:
 
 - `api/jobs.ts` → `GET /api/jobs`
 - `api/apply.ts` → `POST /api/apply`
+- Shared logic: `api/lib/personio.ts`
+- API TypeScript config: `api/tsconfig.json` (CommonJS — required because root `package.json` has `"type": "module"`)
 
 Local development still uses the Hono server in `server/` (`pnpm dev`).
 

@@ -1,6 +1,6 @@
 {
-  "include": ["src/**/*", "server/**/*", "api/**/*"],
-  "exclude": ["node_modules", "build", "dist", "**/*.test.ts"],
+  "include": ["src/**/*", "server/**/*"],
+  "exclude": ["node_modules", "build", "dist", "api", "**/*.test.ts"],
   "compilerOptions": {
     "target": "es2022",
     "lib": ["esnext", "dom", "dom.iterable"],
