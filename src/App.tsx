@@ -47,37 +47,33 @@ const caseStudies: CaseStudy[] = [
     title: 'Web application for INAIA FinTech',
     client: 'INAIA',
     industry: 'Banking',
-    services: ['Web Development', 'Digital Transformation'],
-    summary:
-      'Includes the development of two elements: a comprehensive goal calculator and an investment platform. The former allows users to plan their financial goals, while the latter provides the opportunity to invest in Islamic-compliant savings and investment products across Europe.',
-    accent: '#F4ECE7',
-    secondary: '#1A1A1A',
+    services: ['Digital Transformation', 'Mobile Development'],
+    summary: 'A composable banking experience for 2.4m customers, designed around their actual financial days.',
+    accent: '#D2D4FE',
+    secondary: '#373A72',
     art: 'ribbon',
     image: '/cases/inaia.jpg',
   },
   {
-    id: 'smart-heat',
-    title: 'Smart Heating Control System',
-    client: 'Energy & Utilities',
-    industry: 'Energy & Utilities',
-    services: ['Cloud Deployment', 'MVP Development'],
-    summary:
-      'The heating control system developed from October 2021 to May 2022 uses ESP32 and FreeRTOS modules in C and Python. It uses a variety of protocols to intelligently monitor and control residential heating, taking into account indoor and outdoor temperatures.',
-    accent: '#F0543D',
-    secondary: '#1A1A1A',
-    art: 'grid',
-    image: '/cases/smart-heat.jpg',
+    id: 'atlas',
+    title: 'The map behind the movement',
+    client: 'Atlas Logistics',
+    industry: 'Logistics',
+    services: ['Web Development', 'MVP Development'],
+    summary: 'A control tower for complex supply chains that makes every handoff visible.',
+    accent: '#B9E3D2',
+    secondary: '#164B40',
+    art: 'nodes',
   },
   {
-    id: 'street-lighting',
-    title: 'Street lighting control system',
-    client: 'Energy & Utilities',
-    industry: 'Energy & Utilities',
-    services: ['Cloud Deployment', 'MVP Development'],
-    summary:
-      'The streetlight control system, built between February and October 2020, uses ESP32 and FreeRTOS modules. It autonomously controls streetlights according to a schedule related to sunset and sunrise and collects telemetry for real-time monitoring.',
-    accent: '#F0543D',
-    secondary: '#1A1A1A',
+    id: 'civic',
+    title: 'Public services, made legible',
+    client: 'Civic Futures',
+    industry: 'Government',
+    services: ['Custom Software', 'Digital Transformation'],
+    summary: 'A language-first casework system that helps frontline teams resolve cases with confidence.',
+    accent: '#F8D1C8',
+    secondary: '#F0543D',
     art: 'bars',
     image: '/cases/street-lighting.jpg',
   },
@@ -86,37 +82,22 @@ const caseStudies: CaseStudy[] = [
     title: 'Mobile app for kids with autism (AAT)',
     client: 'Education',
     industry: 'Education',
-    services: ['Mobile Development'],
-    summary:
-      'AAT is a mobile learning app for children with Autism Spectrum Disorder (ASD)—an educational platform that lets children interact with sound cards to develop communication skills, with the ability to track progress.',
-    accent: '#F0543D',
-    secondary: '#1A1A1A',
+    services: ['Cloud Development', 'Web Development'],
+    summary: 'Cloud infrastructure and tools that give educators more time for the human work.',
+    accent: '#F4B9C8',
+    secondary: '#792A4F',
     art: 'ribbon',
     image: '/cases/aat.jpg',
   },
   {
-    id: 'mar-taxi',
-    title: 'Online Taxi Service for MAR Taxi',
-    client: 'MAR Taxi GmbH',
-    industry: 'Logistics',
-    services: ['Web Development', 'Mobile Development'],
-    summary:
-      'Development of a web-based taxi booking platform for MAR Taxi GmbH in Germany to improve customer experience through a user-friendly online booking tool, optimised for mobile devices and different passenger needs.',
-    accent: '#F0543D',
-    secondary: '#1A1A1A',
-    art: 'nodes',
-    image: '/cases/mar-taxi.jpg',
-  },
-  {
-    id: 'edp',
-    title: 'Environmental Data Reporting Portal (EDP)',
-    client: 'EU Environment Agency',
-    industry: 'Government',
-    services: ['Digital Transformation', 'Web Development'],
-    summary:
-      'Developed for the EU Environment Agency to simplify reporting by facility operators under environmental regulations. Includes multiple modules for different reporting requirements, compliance, and data integrity.',
-    accent: '#F4ECE7',
-    secondary: '#1A1A1A',
+    id: 'vita',
+    title: 'From data to better care',
+    client: 'Vita Life Sciences',
+    industry: 'Life Sciences',
+    services: ['Custom Software', 'Cloud Development'],
+    summary: 'A secure research workspace connecting teams, evidence, and the next breakthrough.',
+    accent: '#C3D6F4',
+    secondary: '#234A85',
     art: 'grid',
     image: '/cases/edp.jpg',
   },
@@ -646,9 +627,7 @@ function Hero() {
           <h1 className="display-font mt-8 text-[clamp(4.2rem,10.7vw,9.5rem)] font-semibold leading-[.84] tracking-[-.085em]">
             Engineers<br /><span className="text-[#1A1A1A]">for AI</span><br />Era<span className="text-[#1A1A1A]">.</span>
           </h1>
-          <p className="mt-10 max-w-[500px] text-[1.08rem] leading-[1.65] text-[#F4ECE7]">
-            AttoLabs helps organizations turn ideas into AI-enabled software. From cloud-native platforms to custom applications, we build solutions that are practical, scalable and ready for the future.
-          </p>
+          <p className="mt-10 max-w-[500px] text-[1.08rem] leading-[1.65] text-[#F4ECE7]/85">AttoLabs helps organizations turn ideas into AI-enabled software. Practical, scalable, and ready for the future.</p>
           <div className="mt-10 flex flex-wrap gap-3">
             <ButtonLink href="/cases">Explore our work</ButtonLink>
             <Link href="/cooperation" className="group inline-flex items-center gap-3 px-4 py-3.5 mono-label text-[#F4ECE7] hover:text-[#1A1A1A]" data-testid="link-hero-contact">Tell us what’s next <ArrowDownRight size={17} className="transition-transform group-hover:translate-y-1 group-hover:translate-x-1" /></Link>
@@ -698,20 +677,7 @@ function FilterChip({ active, children, onClick }: { active: boolean; children: 
   return <button onClick={onClick} data-testid={`filter-${String(children).toLowerCase().replaceAll(' ', '-')}`} className={`whitespace-nowrap border px-3 py-2 mono-label transition-all ${active ? 'border-page-accent bg-page-accent text-[#F4ECE7]' : 'border-[#1A1A1A]/25 hover:border-[#1A1A1A]'}`}>{children}</button>;
 }
 
-function CaseVisual({ item, loading = 'lazy' }: { item: CaseStudy; loading?: 'lazy' | 'eager' }) {
-  if (item.image) {
-    return (
-      <div className="relative h-full w-full overflow-hidden bg-[#1A1A1A]">
-        <img
-          src={item.image}
-          alt={item.title}
-          loading={loading}
-          decoding="async"
-          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-        />
-      </div>
-    )
-  }
+function CaseVisual({ item }: { item: CaseStudy }) {
   if (item.art === 'grid') return <div className="relative h-full w-full overflow-hidden" style={{ background: item.secondary }}><div className="absolute inset-0 opacity-40" style={{ backgroundImage: `linear-gradient(${item.accent} 1px,transparent 1px),linear-gradient(90deg,${item.accent} 1px,transparent 1px)`, backgroundSize: '27px 27px' }} /><div className="absolute left-1/2 top-1/2 h-32 w-32 -translate-x-1/2 -translate-y-1/2 rounded-full border-[17px]" style={{ borderColor: item.accent }} /><div className="absolute left-1/2 top-1/2 h-3 w-3 -translate-x-1/2 -translate-y-1/2" style={{ background: item.accent }} /></div>;
   if (item.art === 'bars') return <div className="relative h-full w-full overflow-hidden p-7" style={{ background: item.accent }}><div className="flex h-full items-end gap-2">{[.35,.58,.48,.78,.63,.93,.71,.86].map((height, i) => <div key={i} className="flex-1" style={{ height: `${height * 100}%`, background: i % 3 === 0 ? item.secondary : '#F4ECE7' }} />)}</div><div className="absolute left-7 top-7 mono-label" style={{ color: item.secondary }}>case / {item.id}</div></div>;
   if (item.art === 'nodes') return <div className="relative h-full w-full overflow-hidden" style={{ background: item.secondary }}><svg viewBox="0 0 400 300" className="h-full w-full"><path d="M10 230 95 155l72 37 69-103 75 76 78-124" stroke={item.accent} strokeWidth="2" fill="none" /><path d="M10 230 95 155l72 37 69-103 75 76 78-124" stroke={item.accent} strokeWidth="14" strokeDasharray="1 30" strokeLinecap="round" fill="none" /><g fill={item.accent}>{[[10,230],[95,155],[167,192],[236,89],[311,165],[389,41]].map(([x,y]) => <circle key={`${x}-${y}`} cx={x} cy={y} r="8" />)}</g></svg><div className="absolute left-6 top-6 mono-label" style={{ color: item.accent }}>network / visible</div></div>;
@@ -856,7 +822,7 @@ function Clients() {
         <Reveal>
           <SectionIntro
             tag="05 / Clients"
-            title={<>We are proud to be<br /><span className="text-page-accent">a partner to our clients.</span></>}
+            title={<>Trusted by teams<br /><span className={accentClass}>doing consequential work.</span></>}
           >
             <span>From global health and financial infrastructure to universities and technology leaders, we work with teams where software has something real to carry.</span>
           </SectionIntro>
@@ -899,7 +865,7 @@ function About() {
                 <div className="mono-label">We are / a wide orbit</div>
                 <div>
                   <div className="display-font text-5xl font-semibold leading-[.87] tracking-[-.08em]">The future<br />needs builders.</div>
-                  <div className="mt-6 max-w-xs text-sm leading-relaxed text-[#F4ECE7]">A distributed team across Switzerland, Germany, Türkiye, and Uzbekistan.</div>
+                  <div className="mt-6 max-w-xs text-sm leading-relaxed text-[#F4ECE7]/75">A large distributed team working across London, Lisbon, Toronto, and São Paulo.</div>
                 </div>
               </div>
             </div>
@@ -955,31 +921,6 @@ function Contact({ sectionTheme = 'coral' }: { sectionTheme?: SectionTheme }) {
           <p className="mt-9 max-w-md text-lg leading-[1.6]" style={{ color: tokens.muted }}>
             Bring us the hard problem, the half-formed idea, or the thing your team can’t stop thinking about. We’ll bring questions.
           </p>
-          <a
-            href="mailto:contact@attolabs.eu"
-            className="mt-8 inline-block mono-label font-semibold underline underline-offset-4"
-            style={{ color: tokens.fg }}
-          >
-            contact@attolabs.eu
-          </a>
-          <div className="mt-10 grid gap-5 sm:grid-cols-2">
-            {offices.map((office) => (
-              <div key={office.region}>
-                <div className="mono-label font-semibold" style={{ color: tokens.fg }}>{office.region}</div>
-                <p className="mt-2 text-sm leading-relaxed" style={{ color: tokens.muted }}>{office.address}</p>
-                {office.phones.map((phone) => (
-                  <a
-                    key={phone}
-                    href={`tel:${phone.replace(/\s/g, "")}`}
-                    className="mt-1 block text-sm hover:underline"
-                    style={{ color: tokens.muted }}
-                  >
-                    {phone}
-                  </a>
-                ))}
-              </div>
-            ))}
-          </div>
           <div className="mt-12 flex items-center gap-3 mono-label" style={{ color: tokens.muted }}>
             <span className="status-pulse h-2 w-2 rounded-full bg-[#F4ECE7]" />
             Usually reply within two working days
@@ -1067,52 +1008,7 @@ function Contact({ sectionTheme = 'coral' }: { sectionTheme?: SectionTheme }) {
 }
 
 function Footer() {
-  return (
-    <footer className="bg-[#1A1A1A] py-10 text-[#F4ECE7]">
-      <div className="site-wrap flex flex-col gap-10">
-        <div className="flex flex-col gap-8 md:flex-row md:items-start md:justify-between">
-          <div>
-            <Link href="/" className="flex items-center gap-2.5" data-testid="link-footer-home">
-              <BrandMark light />
-              <span className="display-font text-[1.14rem] font-bold tracking-[-.04em]">AttoLabs</span>
-            </Link>
-            <p className="mt-4 max-w-xs text-sm leading-relaxed text-[#F4ECE7]/75">
-              We turn ideas into AI-enabled software — practical, scalable, and built for real impact.
-            </p>
-            <a href="mailto:contact@attolabs.eu" className="mt-4 inline-block mono-label text-page-accent hover:underline">
-              contact@attolabs.eu
-            </a>
-          </div>
-          <div className="flex flex-wrap gap-x-6 gap-y-3 mono-label text-[#F4ECE7]/75">
-            <Link href="/cases" className="hover:text-page-accent">Work</Link>
-            <Link href="/about" className="hover:text-page-accent">About</Link>
-            <Link href="/careers" className="hover:text-page-accent">Jobs</Link>
-            <Link href="/cooperation" className="hover:text-page-accent">Contact</Link>
-          </div>
-        </div>
-        <div className="grid gap-6 border-t border-[#F4ECE7]/10 pt-8 sm:grid-cols-2 lg:grid-cols-4">
-          {offices.map((office) => (
-            <div key={office.region}>
-              <div className="mono-label text-page-accent">{office.region}</div>
-              <p className="mt-2 text-sm leading-relaxed text-[#F4ECE7]/75">{office.address}</p>
-              <div className="mt-2 flex flex-col gap-1">
-                {office.phones.map((phone) => (
-                  <a
-                    key={phone}
-                    href={`tel:${phone.replace(/\s/g, "")}`}
-                    className="inline-block text-sm text-[#F4ECE7]/85 hover:text-page-accent"
-                  >
-                    {phone}
-                  </a>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-        <div className="mono-label text-[#F4ECE7]/70">© 2026 AttoLabs</div>
-      </div>
-    </footer>
-  )
+  return <footer className="bg-[#1A1A1A] py-8 text-[#F4ECE7]"><div className="site-wrap flex flex-col gap-8 md:flex-row md:items-end md:justify-between"><div><Link href="/" className="flex items-center gap-2.5" data-testid="link-footer-home"><BrandMark light /><span className="display-font text-[1.14rem] font-bold tracking-[-.04em]">AttoLabs</span></Link><p className="mt-4 max-w-xs text-sm leading-relaxed text-[#F4ECE7]/45">Engineering for the AI era, from idea to impact.</p></div><div className="flex flex-wrap gap-x-6 gap-y-3 mono-label text-[#F4ECE7]/55"><Link href="/cases" className="hover:text-[#F6D24A]">Work</Link><Link href="/about" className="hover:text-[#F6D24A]">About</Link><Link href="/careers" className="hover:text-[#F6D24A]">Jobs</Link><Link href="/cooperation" className="hover:text-[#F6D24A]">Contact</Link><a href="mailto:hello@attolabs.com" className="hover:text-[#F6D24A]">hello@attolabs.com</a></div><div className="mono-label text-[#F4ECE7]/35">© 2026 AttoLabs</div></div></footer>;
 }
 
 function PageFrame({ theme, children }: { theme: SectionTheme; children: ReactNode }) {
