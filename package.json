@@ -4,10 +4,10 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "concurrently -k -n api,web -c cyan,magenta \"pnpm dev:api\" \"pnpm dev:web\"",
+    "dev": "node api.js && concurrently -k -n api,web -c cyan,magenta \"pnpm dev:api\" \"pnpm dev:web\"",
     "dev:web": "vite",
     "dev:api": "tsx watch server/index.ts",
-    "build": "vite build",
+    "build": "node api.js && vite build",
     "preview": "concurrently -k -n api,web -c cyan,magenta \"pnpm dev:api\" \"vite preview\"",
     "start:api": "tsx server/index.ts",
     "typecheck": "tsc -p tsconfig.json --noEmit"

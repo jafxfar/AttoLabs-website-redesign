@@ -12,10 +12,6 @@ export default function NotFound() {
               404 Page Not Found
             </h1>
           </div>
-
-          <p className="mt-4 text-sm text-[#1A1A1A]/75">
-            Did you forget to add the page to the router?
-          </p>
         </CardContent>
       </Card>
     </div>
