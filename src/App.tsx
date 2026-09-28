@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, type FormEvent, type ReactNode } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useState, type FormEvent, type ReactNode } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import {
   ArrowDownRight,
@@ -50,8 +50,8 @@ const caseStudies: CaseStudy[] = [
     services: ['Web Development', 'Digital Transformation'],
     summary:
       'Includes the development of two elements: a comprehensive goal calculator and an investment platform. The former allows users to plan their financial goals, while the latter provides the opportunity to invest in Islamic-compliant savings and investment products across Europe.',
-    accent: '#D2D4FE',
-    secondary: '#373A72',
+    accent: '#F4ECE7',
+    secondary: '#1A1A1A',
     art: 'ribbon',
     image: '/cases/inaia.jpg',
   },
@@ -64,7 +64,7 @@ const caseStudies: CaseStudy[] = [
     summary:
       'The heating control system developed from October 2021 to May 2022 uses ESP32 and FreeRTOS modules in C and Python. It uses a variety of protocols to intelligently monitor and control residential heating, taking into account indoor and outdoor temperatures.',
     accent: '#F0543D',
-    secondary: '#F6D24A',
+    secondary: '#1A1A1A',
     art: 'grid',
     image: '/cases/smart-heat.jpg',
   },
@@ -76,7 +76,7 @@ const caseStudies: CaseStudy[] = [
     services: ['Cloud Deployment', 'MVP Development'],
     summary:
       'The streetlight control system, built between February and October 2020, uses ESP32 and FreeRTOS modules. It autonomously controls streetlights according to a schedule related to sunset and sunrise and collects telemetry for real-time monitoring.',
-    accent: '#F6D24A',
+    accent: '#F0543D',
     secondary: '#1A1A1A',
     art: 'bars',
     image: '/cases/street-lighting.jpg',
@@ -89,8 +89,8 @@ const caseStudies: CaseStudy[] = [
     services: ['Mobile Development'],
     summary:
       'AAT is a mobile learning app for children with Autism Spectrum Disorder (ASD)—an educational platform that lets children interact with sound cards to develop communication skills, with the ability to track progress.',
-    accent: '#F4B9C8',
-    secondary: '#792A4F',
+    accent: '#F0543D',
+    secondary: '#1A1A1A',
     art: 'ribbon',
     image: '/cases/aat.jpg',
   },
@@ -102,8 +102,8 @@ const caseStudies: CaseStudy[] = [
     services: ['Web Development', 'Mobile Development'],
     summary:
       'Development of a web-based taxi booking platform for MAR Taxi GmbH in Germany to improve customer experience through a user-friendly online booking tool, optimised for mobile devices and different passenger needs.',
-    accent: '#B9E3D2',
-    secondary: '#164B40',
+    accent: '#F0543D',
+    secondary: '#1A1A1A',
     art: 'nodes',
     image: '/cases/mar-taxi.jpg',
   },
@@ -115,8 +115,8 @@ const caseStudies: CaseStudy[] = [
     services: ['Digital Transformation', 'Web Development'],
     summary:
       'Developed for the EU Environment Agency to simplify reporting by facility operators under environmental regulations. Includes multiple modules for different reporting requirements, compliance, and data integrity.',
-    accent: '#C3D6F4',
-    secondary: '#234A85',
+    accent: '#F4ECE7',
+    secondary: '#1A1A1A',
     art: 'grid',
     image: '/cases/edp.jpg',
   },
@@ -181,11 +181,11 @@ const offices = [
   },
 ]
 
-type SectionTheme = 'coral' | 'yellow' | 'green' | 'blue'
+type SectionTheme = 'coral' | 'green' | 'blue'
 
 const pageThemes = {
   home: 'coral',
-  cases: 'yellow',
+  cases: 'coral',
   about: 'green',
   cooperation: 'blue',
   careers: 'green',
@@ -205,42 +205,33 @@ const themeTokens: Record<
   coral: {
     bg: '#F0543D',
     fg: '#F4ECE7',
-    muted: 'rgba(244,236,231,0.75)',
-    accent: '#F6D24A',
+    muted: '#F4ECE7',
+    accent: '#1A1A1A',
     ink: false,
     heroClass: 'section-hero-coral',
-  },
-  yellow: {
-    bg: '#F6D24A',
-    fg: '#1A1A1A',
-    muted: 'rgba(26,26,26,0.65)',
-    accent: '#1A1A1A',
-    ink: true,
-    heroClass: 'section-hero-yellow',
   },
   green: {
     bg: '#1FA35A',
     fg: '#F4ECE7',
-    muted: 'rgba(244,236,231,0.75)',
-    accent: 'rgba(244,236,231,0.55)',
+    muted: '#F4ECE7',
+    accent: '#1A1A1A',
     ink: false,
     heroClass: 'section-hero-green',
   },
   blue: {
     bg: '#3B5BDB',
     fg: '#F4ECE7',
-    muted: 'rgba(244,236,231,0.75)',
-    accent: 'rgba(244,236,231,0.55)',
+    muted: '#F4ECE7',
+    accent: '#1A1A1A',
     ink: false,
     heroClass: 'section-hero-blue',
   },
 }
 
-const sectionAccentClass: Record<SectionTheme, string> = {
-  coral: 'text-brand-coral',
-  yellow: 'text-brand-yellow',
-  green: 'text-brand-green',
-  blue: 'text-brand-blue',
+const usePageTheme = (theme: SectionTheme) => {
+  useLayoutEffect(() => {
+    document.documentElement.style.setProperty('--page-accent', themeTokens[theme].bg)
+  }, [theme])
 }
 
 const pageMeta: Record<Locale, Record<string, { title: string; description: string }>> = {
@@ -443,7 +434,7 @@ function BrandMark({ light = false }: { light?: boolean }) {
 
 function SectionTag({ children, light = false }: { children: ReactNode; light?: boolean }) {
   return (
-    <div className={`mono-label flex items-center gap-3 ${light ? 'text-[#F4ECE7]/65' : 'text-[#1A1A1A]/55'}`}>
+    <div className={`mono-label flex items-center gap-3 ${light ? 'text-[#F4ECE7]' : 'text-[#1A1A1A]/70'}`}>
       <span className="h-px w-7 bg-current" />
       {children}
     </div>
@@ -461,7 +452,7 @@ function ButtonLink({
 }) {
   const className = `group inline-flex items-center gap-3 border px-5 py-3.5 mono-label transition-colors ${
     coral
-      ? 'cta-coral'
+      ? 'cta-accent'
       : 'border-[#1A1A1A]/35 hover:bg-[#1A1A1A] hover:text-[#F4ECE7]'
   }`;
   const content = (
@@ -539,6 +530,11 @@ function Header({ overlay = false }: { overlay?: boolean }) {
     ['Jobs', '/careers'],
   ];
   const languagePath = (locale: Locale) => (locale === 'en' ? '/' : `/${locale}`);
+  const hoverClass = overlay ? 'hover:text-[#1A1A1A]' : 'hover:text-page-accent';
+  const activeLocaleClass = overlay ? 'text-[#1A1A1A]' : 'text-page-accent';
+  const ctaClass = overlay
+    ? 'border-[#1A1A1A] bg-[#1A1A1A] text-[#F4ECE7] hover:border-[#F4ECE7] hover:bg-[#F4ECE7] hover:text-[#1A1A1A]'
+    : 'cta-accent';
   return (
     <header className={`${overlay ? 'absolute' : 'relative bg-[#F4ECE7]'} inset-x-0 top-0 z-40`}>
       <div className="site-wrap flex h-20 items-center justify-between border-b border-[#1A1A1A]/20">
@@ -546,25 +542,25 @@ function Header({ overlay = false }: { overlay?: boolean }) {
           <BrandMark />
           <span className="display-font text-[1.14rem] font-bold tracking-[-.04em]">AttoLabs</span>
         </Link>
-        <nav className="hidden items-center gap-8 md:flex" aria-label="Main navigation">
+        <nav className="hidden items-center gap-8 lg:flex" aria-label="Main navigation">
           {nav.map(([name, href]) => (
             <Link
               key={href}
               href={href}
-              className="mono-label text-[.61rem] transition-colors hover:text-[#F0543D]"
+              className={`mono-label transition-colors ${hoverClass}`}
               data-testid={`link-nav-${name.toLowerCase().replaceAll(' ', '-')}`}
             >
               {name}
             </Link>
           ))}
         </nav>
-        <div className="hidden items-center gap-5 md:flex">
-          <div className="flex items-center gap-2 mono-label text-[.56rem]">
+        <div className="hidden items-center gap-5 lg:flex">
+          <div className="flex items-center gap-2 mono-label">
             {(['en', 'ru', 'de'] as Locale[]).map((locale) => (
               <Link
                 key={locale}
                 href={languagePath(locale)}
-                className={`${(location === languagePath(locale) || (locale === 'en' && !location.startsWith('/ru') && !location.startsWith('/de'))) ? 'text-[#F0543D]' : 'text-[#1A1A1A]/45'} hover:text-[#F0543D]`}
+                className={`${(location === languagePath(locale) || (locale === 'en' && !location.startsWith('/ru') && !location.startsWith('/de'))) ? activeLocaleClass : 'text-[#1A1A1A]/70'} ${hoverClass}`}
                 aria-label={`Switch to ${locale}`}
               >
                 {locale.toUpperCase()}
@@ -573,14 +569,14 @@ function Header({ overlay = false }: { overlay?: boolean }) {
           </div>
           <Link
             href="/cooperation"
-            className="cta-coral border px-4 py-2.5 mono-label transition-colors"
+            className={`${ctaClass} border px-4 py-2.5 mono-label transition-colors`}
             data-testid="link-start-project"
           >
             Start a project
           </Link>
         </div>
         <button
-          className="md:hidden"
+          className="lg:hidden"
           aria-label={open ? 'Close navigation' : 'Open navigation'}
           onClick={() => setOpen(!open)}
           data-testid="button-mobile-menu"
@@ -594,7 +590,7 @@ function Header({ overlay = false }: { overlay?: boolean }) {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="border-b border-[#1A1A1A] bg-[#F4ECE7] md:hidden"
+            className="border-b border-[#1A1A1A] bg-[#F4ECE7] lg:hidden"
           >
             <div className="site-wrap flex flex-col py-3">
               {nav.map(([name, href]) => (
@@ -629,11 +625,11 @@ function RotorArt() {
           <path d="M250 297c38 0 69 31 69 69 0 38-31 69-69 69-38 0-69-31-69-69 0-38 31-69 69-69Z" stroke="#F0543D" strokeWidth="18" />
           <path d="M65 250c0-38 31-69 69-69 38 0 69 31 69 69 0 38-31 69-69 69-38 0-69-31-69-69Z" stroke="#F0543D" strokeWidth="18" />
           <path d="M297 250c0-38 31-69 69-69 38 0 69 31 69 69 0 38-31 69-69 69-38 0-69-31-69-69Z" stroke="#F0543D" strokeWidth="18" />
-          <circle cx="250" cy="250" r="26" fill="#F6D24A" />
+          <circle cx="250" cy="250" r="26" fill="#F4ECE7" />
           <circle cx="250" cy="250" r="8" fill="#1A1A1A" />
         </svg>
       </div>
-      <div className="hero-orbit-slow absolute inset-[11%]"><div className="h-2 w-2 bg-[#F6D24A]" /></div>
+      <div className="hero-orbit-slow absolute inset-[11%]"><div className="h-2 w-2 bg-[#F4ECE7]" /></div>
     </div>
   );
 }
@@ -648,26 +644,26 @@ function Hero() {
         <motion.div initial={reduce ? false : { opacity: 0, x: -24 }} animate={reduce ? undefined : { opacity: 1, x: 0 }} transition={{ duration: .8 }} className="max-w-[650px]">
           <SectionTag light>01 / AttoLabs</SectionTag>
           <h1 className="display-font mt-8 text-[clamp(4.2rem,10.7vw,9.5rem)] font-semibold leading-[.84] tracking-[-.085em]">
-            Engineers<br /><span className="text-[#1A1A1A]">for AI</span><br />Era<span className="text-[#F6D24A]">.</span>
+            Engineers<br /><span className="text-[#1A1A1A]">for AI</span><br />Era<span className="text-[#1A1A1A]">.</span>
           </h1>
-          <p className="mt-10 max-w-[500px] text-[1.08rem] leading-[1.65] text-[#F4ECE7]/85">
+          <p className="mt-10 max-w-[500px] text-[1.08rem] leading-[1.65] text-[#F4ECE7]">
             AttoLabs helps organizations turn ideas into AI-enabled software. From cloud-native platforms to custom applications, we build solutions that are practical, scalable and ready for the future.
           </p>
           <div className="mt-10 flex flex-wrap gap-3">
             <ButtonLink href="/cases">Explore our work</ButtonLink>
-            <Link href="/cooperation" className="group inline-flex items-center gap-3 px-4 py-3.5 mono-label text-[#F4ECE7] hover:text-[#F6D24A]" data-testid="link-hero-contact">Tell us what’s next <ArrowDownRight size={17} className="transition-transform group-hover:translate-y-1 group-hover:translate-x-1" /></Link>
+            <Link href="/cooperation" className="group inline-flex items-center gap-3 px-4 py-3.5 mono-label text-[#F4ECE7] hover:text-[#1A1A1A]" data-testid="link-hero-contact">Tell us what’s next <ArrowDownRight size={17} className="transition-transform group-hover:translate-y-1 group-hover:translate-x-1" /></Link>
           </div>
         </motion.div>
         <motion.div initial={reduce ? false : { opacity: 0, scale: .8, rotate: -12 }} animate={reduce ? undefined : { opacity: 1, scale: 1, rotate: 0 }} transition={{ duration: 1, delay: .2, ease: [0.22, 1, 0.36, 1] }} className="float-mark relative">
           <RotorArt />
-          <div className="absolute bottom-2 left-0 max-w-[180px] mono-label leading-[1.6] text-[#F4ECE7]/60">A large team<br />with a wide orbit</div>
+          <div className="absolute bottom-2 left-0 max-w-[180px] mono-label leading-[1.6] text-[#F4ECE7]">A large team<br />with a wide orbit</div>
         </motion.div>
       </div>
       <div className="relative border-t border-[#F4ECE7]/25">
         <div className="site-wrap flex flex-wrap items-center justify-between gap-4 py-5">
-          <div className="mono-label text-[#F4ECE7]/60">Based across four countries / working everywhere</div>
-          <div className="flex items-center gap-2 mono-label text-[#F4ECE7]/70">
-            <span className="status-pulse h-1.5 w-1.5 rounded-full bg-[#F6D24A]" />
+          <div className="mono-label text-[#F4ECE7]">Based across four countries / working everywhere</div>
+          <div className="flex items-center gap-2 mono-label text-[#F4ECE7]">
+            <span className="status-pulse h-1.5 w-1.5 rounded-full bg-[#F4ECE7]" />
             Open for conversations
           </div>
         </div>
@@ -685,8 +681,8 @@ function Stats() {
             key={label}
             className={`border-[#F4ECE7]/20 py-10 md:py-14 ${i < 3 ? 'border-r' : ''} ${i > 1 ? 'border-t md:border-t-0' : ''} ${i == 4 ? 'pr-5 md:pr-10' : 'pl-5 md:pl-10'}`}
           >
-            <div className="display-font text-5xl font-semibold tracking-[-.08em] text-[#F6D24A] md:text-7xl">{num}</div>
-            <div className="mt-3 mono-label text-[#F4ECE7]/55">{label}</div>
+            <div className="display-font text-5xl font-semibold tracking-[-.08em] text-page-accent md:text-7xl">{num}</div>
+            <div className="mt-3 mono-label text-[#F4ECE7]/75">{label}</div>
           </StaggerItem>
         ))}
       </Stagger>
@@ -695,20 +691,22 @@ function Stats() {
 }
 
 function SectionIntro({ tag, title, children, dark = false }: { tag: string; title: ReactNode; children?: ReactNode; dark?: boolean }) {
-  return <div className={`grid gap-8 md:grid-cols-[.8fr_1.2fr] md:gap-20 ${dark ? 'text-[#F4ECE7]' : ''}`}><SectionTag light={dark}>{tag}</SectionTag><div><h2 className="display-font max-w-4xl text-[clamp(2.8rem,6.3vw,6.1rem)] font-semibold leading-[.91] tracking-[-.075em]">{title}</h2>{children && <div className={`mt-8 max-w-xl text-lg leading-[1.65] ${dark ? 'text-[#F4ECE7]/65' : 'text-[#1A1A1A]/65'}`}>{children}</div>}</div></div>;
+  return <div className={`grid gap-8 md:grid-cols-[.8fr_1.2fr] md:gap-20 ${dark ? 'text-[#F4ECE7]' : ''}`}><SectionTag light={dark}>{tag}</SectionTag><div><h2 className="display-font max-w-4xl text-[clamp(2.8rem,6.3vw,6.1rem)] font-semibold leading-[.91] tracking-[-.075em]">{title}</h2>{children && <div className={`mt-8 max-w-xl text-lg leading-[1.65] ${dark ? 'text-[#F4ECE7]' : 'text-[#1A1A1A]/75'}`}>{children}</div>}</div></div>;
 }
 
 function FilterChip({ active, children, onClick }: { active: boolean; children: ReactNode; onClick: () => void }) {
-  return <button onClick={onClick} data-testid={`filter-${String(children).toLowerCase().replaceAll(' ', '-')}`} className={`whitespace-nowrap border px-3 py-2 mono-label text-[.58rem] transition-all ${active ? 'border-[#F0543D] bg-[#F0543D] text-[#F4ECE7]' : 'border-[#1A1A1A]/25 hover:border-[#1A1A1A]'}`}>{children}</button>;
+  return <button onClick={onClick} data-testid={`filter-${String(children).toLowerCase().replaceAll(' ', '-')}`} className={`whitespace-nowrap border px-3 py-2 mono-label transition-all ${active ? 'border-page-accent bg-page-accent text-[#F4ECE7]' : 'border-[#1A1A1A]/25 hover:border-[#1A1A1A]'}`}>{children}</button>;
 }
 
-function CaseVisual({ item }: { item: CaseStudy }) {
+function CaseVisual({ item, loading = 'lazy' }: { item: CaseStudy; loading?: 'lazy' | 'eager' }) {
   if (item.image) {
     return (
       <div className="relative h-full w-full overflow-hidden bg-[#1A1A1A]">
         <img
           src={item.image}
           alt={item.title}
+          loading={loading}
+          decoding="async"
           className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
         />
       </div>
@@ -725,33 +723,30 @@ function CaseCard({ item }: { item: CaseStudy }) {
   return (
     <motion.div
       layout
-      className="group text-left"
+      className="group flex h-full flex-col text-left"
       initial={reduce ? false : { opacity: 0, y: 24 }}
       whileInView={reduce ? undefined : { opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.2 }}
       transition={{ duration: 0.55, ease: easeOut, layout: { duration: 0.35 } }}
     >
-      <Link href={`/cases/${item.id}`} data-testid={`card-case-${item.id}`}>
-        <div className="relative aspect-[1.23] overflow-hidden">
+      <Link href={`/cases/${item.id}`} className="flex h-full flex-col" data-testid={`card-case-${item.id}`}>
+        <div className="relative rounded-tl-[1.5rem] rounded-br-[1.5rem] aspect-[16/10] overflow-hidden">
           <CaseVisual item={item} />
           <div className="absolute inset-0 bg-[#1A1A1A]/10 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-          <div className="absolute bottom-4 right-4 flex h-10 w-10 translate-y-2 items-center justify-center bg-[#F4ECE7] opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
-            <ArrowRight size={17} />
-          </div>
         </div>
-        <div className="mt-5 flex items-start justify-between gap-3">
+        <div className="mt-4 flex items-start justify-between gap-3">
           <div>
-            <div className="mono-label text-[#1A1A1A]/50">{item.client}</div>
-            <h3 className="display-font mt-2 text-2xl font-semibold leading-[1.05] tracking-[-.045em]">{item.title}</h3>
+            <div className="mono-label text-[#1A1A1A]/70">{item.client}</div>
+            <h3 className="display-font mt-2 text-xl font-semibold leading-[1.1] tracking-[-.04em]">{item.title}</h3>
           </div>
-          <span className="mt-1 text-[#F0543D]">
+          <span className="mt-1 text-page-accent">
             <ArrowRight size={18} className="-rotate-45 transition-transform duration-300 group-hover:rotate-0" />
           </span>
         </div>
-        <p className="mt-3 max-w-sm text-sm leading-[1.55] text-[#1A1A1A]/60">{item.summary}</p>
-        <div className="mt-4 flex flex-wrap gap-1.5">
+        <p className="mt-2 line-clamp-3 text-sm leading-[1.55] text-[#1A1A1A]/75">{item.summary}</p>
+        <div className="mt-auto flex flex-wrap gap-1.5 pt-4">
           {item.services.map((service) => (
-            <span key={service} className="border border-[#1A1A1A]/20 px-2 py-1 mono-label text-[.53rem]">
+            <span key={service} className="border border-[#1A1A1A]/20 px-2 py-1 mono-label">
               {service}
             </span>
           ))}
@@ -761,23 +756,22 @@ function CaseCard({ item }: { item: CaseStudy }) {
   )
 }
 
-function Work({ sectionTheme = 'coral' }: { sectionTheme?: SectionTheme }) {
+function Work() {
   const [service, setService] = useState('All services');
   const [industry, setIndustry] = useState('All industries');
   const filtered = useMemo(() => caseStudies.filter(c => (service === 'All services' || c.services.includes(service)) && (industry === 'All industries' || c.industry === industry)), [service, industry]);
-  const accentClass = sectionAccentClass[sectionTheme]
   return <section id="work" className="bg-[#F4ECE7] py-24 md:py-36"><div className="site-wrap">
     <Reveal>
-      <SectionIntro tag="02 / Selected work" title={<>Useful things,<br /><span className={accentClass}>built properly.</span></>}><span>Good engineering should be felt by the people using it. These are a few places where we made complex things clearer, faster, and more capable.</span></SectionIntro>
+      <SectionIntro tag="02 / Selected work" title={<>Useful things,<br /><span className="text-page-accent">built properly.</span></>}><span>Good engineering should be felt by the people using it. These are a few places where we made complex things clearer, faster, and more capable.</span></SectionIntro>
     </Reveal>
-    <div className="mt-16 border-y border-[#1A1A1A]/20 py-5"><div className="flex flex-col gap-4 md:flex-row md:items-start md:gap-10"><div className="flex items-center gap-3 pt-2 mono-label text-[#1A1A1A]/50"><Zap size={14} className="text-brand-coral" />Find by</div><div className="flex min-w-0 flex-1 flex-col gap-3"><div className="flex flex-wrap gap-2">{services.map(item => <FilterChip key={item} active={service === item} onClick={() => setService(item)}>{item}</FilterChip>)}</div><div className="flex flex-wrap gap-2">{industries.map(item => <FilterChip key={item} active={industry === item} onClick={() => setIndustry(item)}>{item}</FilterChip>)}</div></div></div></div>
-    <div className="mt-7 flex items-center justify-between"><p className="mono-label text-[#1A1A1A]/55" data-testid="text-result-count">{filtered.length} {filtered.length === 1 ? 'case study' : 'case studies'} / matching your view</p>{(service !== 'All services' || industry !== 'All industries') && <button onClick={() => { setService('All services'); setIndustry('All industries'); }} className="mono-label text-brand-coral underline underline-offset-4" data-testid="button-clear-filters">Clear filters</button>}</div>
-    <motion.div layout className="mt-8 grid gap-x-8 gap-y-16 md:grid-cols-2">{filtered.map(item => <CaseCard key={item.id} item={item} />)}</motion.div>
-    {filtered.length === 0 && <div className="border border-dashed border-[#1A1A1A]/30 py-20 text-center"><div className="mx-auto flex h-14 w-14 items-center justify-center border border-[#F0543D] text-[#F0543D]"><Network size={21} /></div><h3 className="display-font mt-5 text-2xl font-semibold">That combination is still becoming.</h3><p className="mx-auto mt-2 max-w-sm text-sm text-[#1A1A1A]/60">We don’t have a published case study for this view yet. Tell us what you’re building and we’ll talk through the shape of it.</p><Link href="/cooperation" className="mt-5 inline-block mono-label text-[#F0543D] underline underline-offset-4">Start the conversation</Link></div>}
+    <div className="mt-16 border-y border-[#1A1A1A]/20 py-5"><div className="flex flex-col gap-4 md:flex-row md:items-start md:gap-10"><div className="flex items-center gap-3 pt-2 mono-label text-[#1A1A1A]/70"><Zap size={14} className="text-page-accent" />Find by</div><div className="flex min-w-0 flex-1 flex-col gap-3"><div className="flex flex-wrap gap-2">{services.map(item => <FilterChip key={item} active={service === item} onClick={() => setService(item)}>{item}</FilterChip>)}</div><div className="flex flex-wrap gap-2">{industries.map(item => <FilterChip key={item} active={industry === item} onClick={() => setIndustry(item)}>{item}</FilterChip>)}</div></div></div></div>
+    <div className="mt-7 flex items-center justify-between"><p className="mono-label text-[#1A1A1A]/70" data-testid="text-result-count">{filtered.length} {filtered.length === 1 ? 'case study' : 'case studies'} / matching your view</p>{(service !== 'All services' || industry !== 'All industries') && <button onClick={() => { setService('All services'); setIndustry('All industries'); }} className="mono-label text-page-accent underline underline-offset-4" data-testid="button-clear-filters">Clear filters</button>}</div>
+    <motion.div layout className="mt-8 grid gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">{filtered.map(item => <CaseCard key={item.id} item={item} />)}</motion.div>
+    {filtered.length === 0 && <div className="border border-dashed border-[#1A1A1A]/30 py-20 text-center"><div className="mx-auto flex h-14 w-14 items-center justify-center border border-page-accent text-page-accent"><Network size={21} /></div><h3 className="display-font mt-5 text-2xl font-semibold">That combination is still becoming.</h3><p className="mx-auto mt-2 max-w-sm text-sm text-[#1A1A1A]/75">We don’t have a published case study for this view yet. Tell us what you’re building and we’ll talk through the shape of it.</p><Link href="/cooperation" className="mt-5 inline-block mono-label text-page-accent underline underline-offset-4">Start the conversation</Link></div>}
   </div></section>;
 }
 
-function Process({ sectionTheme = 'yellow' }: { sectionTheme?: SectionTheme }) {
+function Process({ sectionTheme = 'coral' }: { sectionTheme?: SectionTheme }) {
   const steps = [
     ['01', 'Listen closely', 'We start with the problem underneath the brief. What must be true for this to work?'],
     ['02', 'Make it legible', 'We map the smallest useful version, the systems around it, and the decisions that matter.'],
@@ -787,7 +781,7 @@ function Process({ sectionTheme = 'yellow' }: { sectionTheme?: SectionTheme }) {
   const tokens = themeTokens[sectionTheme]
   const onColor = !tokens.ink
   const borderClass = onColor ? 'border-[#F4ECE7]/30' : 'border-[#1A1A1A]/30'
-  const copyClass = onColor ? 'text-[#F4ECE7]/70' : 'text-[#1A1A1A]/65'
+  const copyClass = onColor ? 'text-[#F4ECE7]' : 'text-[#1A1A1A]/75'
 
   return (
     <section className={`py-24 md:py-32 ${tokens.heroClass}`}>
@@ -799,7 +793,7 @@ function Process({ sectionTheme = 'yellow' }: { sectionTheme?: SectionTheme }) {
             title={
               <>
                 A process with<br />
-                <span className="text-brand-coral">no theatre.</span>
+                <span style={{ color: tokens.accent }}>no theatre.</span>
               </>
             }
           >
@@ -812,7 +806,7 @@ function Process({ sectionTheme = 'yellow' }: { sectionTheme?: SectionTheme }) {
               key={number}
               className={`border-b py-7 md:border-b-0 md:py-8 ${borderClass} ${i < 3 ? 'md:border-r md:pr-7' : 'md:pl-7'} ${i > 0 ? 'md:pl-7' : ''}`}
             >
-              <div className="mono-label text-brand-coral">{number}</div>
+              <div className="mono-label" style={{ color: tokens.accent }}>{number}</div>
               <h3 className="display-font mt-14 text-2xl font-semibold tracking-[-.04em]">{title}</h3>
               <p className={`mt-4 text-sm leading-[1.6] ${copyClass}`}>{copy}</p>
             </StaggerItem>
@@ -828,24 +822,24 @@ function Proof() {
     <section className="bg-[#1A1A1A] py-24 text-[#F4ECE7] md:py-32">
       <div className="site-wrap">
         <Reveal>
-          <SectionIntro dark tag="04 / The signal" title={<>Serious about<br /><span className="text-[#F6D24A]">useful.</span></>}>
+          <SectionIntro dark tag="04 / The signal" title={<>Serious about<br /><span className="text-page-accent">useful.</span></>}>
             <span>We measure our work by the change it makes, not the noise it creates. The best compliment is a team that can go further after us.</span>
           </SectionIntro>
         </Reveal>
         <div className="mt-20 grid gap-12 md:grid-cols-[1.3fr_.7fr] md:gap-24">
           <Reveal delay={0.08}>
-            <blockquote className="border-l-2 border-[#F0543D] pl-6 md:pl-10">
+            <blockquote className="border-l-2 border-page-accent pl-6 md:pl-10">
               <p className="display-font max-w-3xl text-[clamp(2rem,4vw,4rem)] font-medium leading-[.98] tracking-[-.06em]">
                 “AttoLabs gave us the rare combination of momentum and calm. We shipped something our customers understood on day one.”
               </p>
-              <footer className="mt-8 mono-label text-[#F4ECE7]/55">Maya Chen / VP Product, Liminal Bank</footer>
+              <footer className="mt-8 mono-label text-[#F4ECE7]/75">Maya Chen / VP Product, Liminal Bank</footer>
             </blockquote>
           </Reveal>
           <Stagger className="grid grid-cols-2 gap-x-6 gap-y-9 self-end">
             {[['2.4m', 'customers reached'], ['38%', 'faster decisions'], ['11 mo', 'from brief to launch'], ['4.9/5', 'team trust score']].map(([num, label]) => (
               <StaggerItem key={label} className="border-t border-[#F4ECE7]/25 pt-4">
-                <div className="display-font text-3xl tracking-[-.06em] text-[#F0543D]">{num}</div>
-                <div className="mt-2 mono-label text-[#F4ECE7]/50">{label}</div>
+                <div className="display-font text-3xl tracking-[-.06em] text-page-accent">{num}</div>
+                <div className="mt-2 mono-label text-[#F4ECE7]/75">{label}</div>
               </StaggerItem>
             ))}
           </Stagger>
@@ -855,15 +849,14 @@ function Proof() {
   )
 }
 
-function Clients({ sectionTheme = 'coral' }: { sectionTheme?: SectionTheme }) {
-  const accentClass = sectionAccentClass[sectionTheme]
+function Clients() {
   return (
     <section className="border-b border-[#1A1A1A]/20 bg-[#F4ECE7] py-20 md:py-28">
       <div className="site-wrap">
         <Reveal>
           <SectionIntro
             tag="05 / Clients"
-            title={<>We are proud to be<br /><span className={accentClass}>a partner to our clients.</span></>}
+            title={<>We are proud to be<br /><span className="text-page-accent">a partner to our clients.</span></>}
           >
             <span>From global health and financial infrastructure to universities and technology leaders, we work with teams where software has something real to carry.</span>
           </SectionIntro>
@@ -882,67 +875,61 @@ function Clients({ sectionTheme = 'coral' }: { sectionTheme?: SectionTheme }) {
             </StaggerItem>
           ))}
         </Stagger>
-        <p className="mt-7 mono-label text-[#1A1A1A]/45">A selection of organizations AttoLabs has worked with</p>
+        <p className="mt-7 mono-label text-[#1A1A1A]/70">A selection of organizations AttoLabs has worked with</p>
       </div>
     </section>
   )
 }
 
-function About({ sectionTheme = 'coral' }: { sectionTheme?: SectionTheme }) {
-  const panelBg = themeTokens[sectionTheme].bg
-  const accentClass = sectionAccentClass[sectionTheme]
+function About() {
   return (
     <section id="about" className="bg-[#F4ECE7] py-24 md:py-36">
       <div className="site-wrap">
         <Reveal>
-          <SectionIntro tag="06 / Who we are" title={<>A large team<br />that <span className={accentClass}>cares.</span></>}>
+          <SectionIntro tag="06 / Who we are" title={<>A large team<br />that <span className="text-page-accent">cares.</span></>}>
             <span>AttoLabs is a distributed engineering studio for teams doing consequential work. We bring broad product thinking, systems discipline, and a healthy respect for the details.</span>
           </SectionIntro>
         </Reveal>
         <div className="mt-20 grid gap-8 md:grid-cols-[.9fr_1.1fr]">
           <Reveal>
-            <div className="relative min-h-[340px] overflow-hidden p-7" style={{ background: panelBg }}>
-              <div className="absolute -right-12 -top-12 h-64 w-64 rounded-full border-[32px] border-[#F6D24A]" />
+            <div className="relative min-h-[340px] overflow-hidden bg-page-accent p-7 rounded-tl-[1.5rem] rounded-br-[1.5rem]">
+              <div className="absolute -right-12 -top-12 h-64 w-64 rounded-full border-[32px] border-[#fff]" />
               <div className="absolute -bottom-16 -left-10 h-56 w-56 rounded-full border border-[#F4ECE7]/70" />
               <div className="relative flex h-full flex-col justify-between text-[#F4ECE7]">
                 <div className="mono-label">We are / a wide orbit</div>
                 <div>
                   <div className="display-font text-5xl font-semibold leading-[.87] tracking-[-.08em]">The future<br />needs builders.</div>
-                  <div className="mt-6 max-w-xs text-sm leading-relaxed text-[#F4ECE7]/75">A distributed team across Switzerland, Germany, Türkiye, and Uzbekistan.</div>
+                  <div className="mt-6 max-w-xs text-sm leading-relaxed text-[#F4ECE7]">A distributed team across Switzerland, Germany, Türkiye, and Uzbekistan.</div>
                 </div>
               </div>
             </div>
           </Reveal>
           <Stagger className="grid content-center gap-8 md:grid-cols-2 md:gap-x-12">
             <StaggerItem>
-              <Code2 className="text-brand-coral" size={24} />
+              <Code2 className="text-page-accent" size={24} />
               <h3 className="display-font mt-5 text-xl font-semibold">Technical by default</h3>
-              <p className="mt-3 text-sm leading-[1.6] text-[#1A1A1A]/60">The people in the room are the people writing the software. Architecture is a conversation, not a handoff.</p>
+              <p className="mt-3 text-sm leading-[1.6] text-[#1A1A1A]/75">The people in the room are the people writing the software. Architecture is a conversation, not a handoff.</p>
             </StaggerItem>
             <StaggerItem>
-              <Globe2 className="text-brand-coral" size={24} />
+              <Globe2 className="text-page-accent" size={24} />
               <h3 className="display-font mt-5 text-xl font-semibold">Different by design</h3>
-              <p className="mt-3 text-sm leading-[1.6] text-[#1A1A1A]/60">Distributed teams sharpen our thinking. Many perspectives, one shared standard for the work.</p>
+              <p className="mt-3 text-sm leading-[1.6] text-[#1A1A1A]/75">Distributed teams sharpen our thinking. Many perspectives, one shared standard for the work.</p>
             </StaggerItem>
             <StaggerItem>
-              <Sparkles className="text-brand-coral" size={24} />
+              <Sparkles className="text-page-accent" size={24} />
               <h3 className="display-font mt-5 text-xl font-semibold">Curious, not careless</h3>
-              <p className="mt-3 text-sm leading-[1.6] text-[#1A1A1A]/60">We use AI as leverage, with the judgement to know where it belongs and where it doesn’t.</p>
+              <p className="mt-3 text-sm leading-[1.6] text-[#1A1A1A]/75">We use AI as leverage, with the judgement to know where it belongs and where it doesn’t.</p>
             </StaggerItem>
             <StaggerItem>
-              <Clock3 className="text-brand-coral" size={24} />
+              <Clock3 className="text-page-accent" size={24} />
               <h3 className="display-font mt-5 text-xl font-semibold">Built for the long run</h3>
-              <p className="mt-3 text-sm leading-[1.6] text-[#1A1A1A]/60">We leave systems clearer than we found them, so your team owns the next chapter.</p>
+              <p className="mt-3 text-sm leading-[1.6] text-[#1A1A1A]/75">We leave systems clearer than we found them, so your team owns the next chapter.</p>
             </StaggerItem>
           </Stagger>
         </div>
       </div>
     </section>
   )
-}
-
-function AboutLegacy() {
-  return <section id="about" className="bg-[#F4ECE7] py-24 md:py-36"><div className="site-wrap"><SectionIntro tag="05 / Who we are" title={<>Small enough<br />to <span className="text-[#F0543D]">care.</span></>}><span>AttoLabs is a distributed engineering studio for teams doing consequential work. We bring product thinking, systems discipline, and a healthy respect for the details.</span></SectionIntro><div className="mt-20 grid gap-8 md:grid-cols-[.9fr_1.1fr]"><div className="relative min-h-[340px] overflow-hidden bg-[#F0543D] p-7"><div className="absolute -right-12 -top-12 h-64 w-64 rounded-full border-[32px] border-[#F6D24A]" /><div className="absolute -bottom-16 -left-10 h-56 w-56 rounded-full border border-[#F4ECE7]/70" /><div className="relative flex h-full flex-col justify-between text-[#F4ECE7]"><div className="mono-label">We are / a useful distance away</div><div><div className="display-font text-5xl font-semibold leading-[.87] tracking-[-.08em]">The future<br />needs builders.</div><div className="mt-6 max-w-xs text-sm leading-relaxed text-[#F4ECE7]/75">Our team works across London, Lisbon, Toronto, and São Paulo.</div></div></div></div><div className="grid content-center gap-8 md:grid-cols-2 md:gap-x-12"><div><Code2 className="text-[#F0543D]" size={24} /><h3 className="display-font mt-5 text-xl font-semibold">Technical by default</h3><p className="mt-3 text-sm leading-[1.6] text-[#1A1A1A]/60">The people in the room are the people writing the software. Architecture is a conversation, not a handoff.</p></div><div><Globe2 className="text-[#F0543D]" size={24} /><h3 className="display-font mt-5 text-xl font-semibold">Different by design</h3><p className="mt-3 text-sm leading-[1.6] text-[#1A1A1A]/60">Distributed teams sharpen our thinking. Four perspectives, one shared standard for the work.</p></div><div><Sparkles className="text-[#F0543D]" size={24} /><h3 className="display-font mt-5 text-xl font-semibold">Curious, not careless</h3><p className="mt-3 text-sm leading-[1.6] text-[#1A1A1A]/60">We use AI as leverage, with the judgement to know where it belongs and where it doesn’t.</p></div><div><Clock3 className="text-[#F0543D]" size={24} /><h3 className="display-font mt-5 text-xl font-semibold">Built for the long run</h3><p className="mt-3 text-sm leading-[1.6] text-[#1A1A1A]/60">We leave systems clearer than we found them, so your team owns the next chapter.</p></div></div></div></div></section>;
 }
 
 function Contact({ sectionTheme = 'coral' }: { sectionTheme?: SectionTheme }) {
@@ -952,8 +939,6 @@ function Contact({ sectionTheme = 'coral' }: { sectionTheme?: SectionTheme }) {
     setSent(true)
   }
   const tokens = themeTokens[sectionTheme]
-  const futureAccent =
-    sectionTheme === 'coral' ? 'text-brand-yellow' : 'text-[#F4ECE7]/55'
 
   return (
     <section
@@ -965,22 +950,22 @@ function Contact({ sectionTheme = 'coral' }: { sectionTheme?: SectionTheme }) {
         <Reveal>
           <SectionTag light={!tokens.ink}>07 / Work with us</SectionTag>
           <h2 className="display-font mt-8 text-[clamp(3.4rem,7vw,7.4rem)] font-semibold leading-[.86] tracking-[-.085em]">
-            Expand the<br />possibilities<br />of the <span className={futureAccent}>future.</span>
+            Expand the<br />possibilities<br />of the <span style={{ color: tokens.accent }}>future.</span>
           </h2>
           <p className="mt-9 max-w-md text-lg leading-[1.6]" style={{ color: tokens.muted }}>
             Bring us the hard problem, the half-formed idea, or the thing your team can’t stop thinking about. We’ll bring questions.
           </p>
           <a
             href="mailto:contact@attolabs.eu"
-            className="mt-8 inline-block mono-label underline underline-offset-4"
-            style={{ color: tokens.accent }}
+            className="mt-8 inline-block mono-label font-semibold underline underline-offset-4"
+            style={{ color: tokens.fg }}
           >
             contact@attolabs.eu
           </a>
           <div className="mt-10 grid gap-5 sm:grid-cols-2">
             {offices.map((office) => (
               <div key={office.region}>
-                <div className="mono-label" style={{ color: tokens.accent }}>{office.region}</div>
+                <div className="mono-label font-semibold" style={{ color: tokens.fg }}>{office.region}</div>
                 <p className="mt-2 text-sm leading-relaxed" style={{ color: tokens.muted }}>{office.address}</p>
                 {office.phones.map((phone) => (
                   <a
@@ -996,11 +981,11 @@ function Contact({ sectionTheme = 'coral' }: { sectionTheme?: SectionTheme }) {
             ))}
           </div>
           <div className="mt-12 flex items-center gap-3 mono-label" style={{ color: tokens.muted }}>
-            <span className="status-pulse h-2 w-2 rounded-full bg-[#F0543D]" />
+            <span className="status-pulse h-2 w-2 rounded-full bg-[#F4ECE7]" />
             Usually reply within two working days
           </div>
         </Reveal>
-        <Reveal delay={0.12} className="bg-[#F4ECE7] p-6 text-[#1A1A1A] md:p-9">
+        <Reveal delay={0.12} className="bg-[#F4ECE7] p-6 text-[#1A1A1A] md:p-9 rounded-tl-[1.5rem] rounded-br-[1.5rem]">
           <AnimatePresence mode="wait">
             {sent ? (
               <motion.div
@@ -1008,16 +993,16 @@ function Contact({ sectionTheme = 'coral' }: { sectionTheme?: SectionTheme }) {
                 animate={{ opacity: 1, y: 0 }}
                 className="flex min-h-[390px] flex-col justify-center"
               >
-                <div className="flex h-12 w-12 items-center justify-center bg-[#F0543D] text-[#F4ECE7]">
+                <div className="flex h-12 w-12 items-center justify-center bg-page-accent text-[#F4ECE7]">
                   <Check size={24} />
                 </div>
                 <h3 className="display-font mt-7 text-4xl font-semibold leading-none tracking-[-.06em]">Message received.</h3>
-                <p className="mt-4 max-w-sm text-sm leading-relaxed text-[#1A1A1A]/60">
+                <p className="mt-4 max-w-sm text-sm leading-relaxed text-[#1A1A1A]/75">
                   Thanks for reaching out. We’ll be in touch shortly to find a useful first conversation.
                 </p>
                 <button
                   onClick={() => setSent(false)}
-                  className="mt-8 self-start mono-label text-brand-coral underline underline-offset-4"
+                  className="mt-8 self-start mono-label text-page-accent underline underline-offset-4"
                   data-testid="button-send-another"
                 >
                   Send another message
@@ -1026,50 +1011,50 @@ function Contact({ sectionTheme = 'coral' }: { sectionTheme?: SectionTheme }) {
             ) : (
               <motion.form initial={{ opacity: 0 }} animate={{ opacity: 1 }} onSubmit={submit} className="space-y-7">
                 <div>
-                  <label htmlFor="name" className="mono-label text-[#1A1A1A]/55">Your name</label>
+                  <label htmlFor="name" className="mono-label text-[#1A1A1A]/70">Your name</label>
                   <input
                     required
                     id="name"
                     name="name"
                     type="text"
-                    className="mt-2 w-full border-b border-[#1A1A1A]/30 bg-transparent py-3 text-lg outline-none focus:border-[#F0543D]"
+                    className="mt-2 w-full border-b border-[#1A1A1A]/30 bg-transparent py-3 text-lg outline-none focus:border-page-accent"
                     placeholder="How should we call you?"
                     data-testid="input-name"
                   />
                 </div>
                 <div>
-                  <label htmlFor="email" className="mono-label text-[#1A1A1A]/55">Work email</label>
+                  <label htmlFor="email" className="mono-label text-[#1A1A1A]/70">Work email</label>
                   <input
                     required
                     id="email"
                     name="email"
                     type="email"
-                    className="mt-2 w-full border-b border-[#1A1A1A]/30 bg-transparent py-3 text-lg outline-none focus:border-[#F0543D]"
+                    className="mt-2 w-full border-b border-[#1A1A1A]/30 bg-transparent py-3 text-lg outline-none focus:border-page-accent"
                     placeholder="you@company.com"
                     data-testid="input-email"
                   />
                 </div>
                 <div>
-                  <label htmlFor="brief" className="mono-label text-[#1A1A1A]/55">What are you working on?</label>
+                  <label htmlFor="brief" className="mono-label text-[#1A1A1A]/70">What are you working on?</label>
                   <textarea
                     required
                     id="brief"
                     name="brief"
                     rows={4}
-                    className="mt-2 w-full resize-none border-b border-[#1A1A1A]/30 bg-transparent py-3 text-lg outline-none focus:border-[#F0543D]"
+                    className="mt-2 w-full resize-none border-b border-[#1A1A1A]/30 bg-transparent py-3 text-lg outline-none focus:border-page-accent"
                     placeholder="A few useful details is plenty."
                     data-testid="input-brief"
                   />
                 </div>
                 <button
                   type="submit"
-                  className="group mt-2 flex w-full items-center justify-between cta-coral border px-5 py-4 mono-label"
+                  className="group mt-2 flex w-full items-center justify-between cta-accent border px-5 py-4 mono-label"
                   data-testid="button-submit-contact"
                 >
                   Send the brief
                   <Send size={16} className="transition-transform group-hover:translate-x-1" />
                 </button>
-                <p className="text-[.7rem] leading-relaxed text-[#1A1A1A]/45">
+                <p className="text-xs leading-relaxed text-[#1A1A1A]/75">
                   No sales sequence. No deck required. Just a useful conversation.
                 </p>
               </motion.form>
@@ -1091,31 +1076,31 @@ function Footer() {
               <BrandMark light />
               <span className="display-font text-[1.14rem] font-bold tracking-[-.04em]">AttoLabs</span>
             </Link>
-            <p className="mt-4 max-w-xs text-sm leading-relaxed text-[#F4ECE7]/45">
+            <p className="mt-4 max-w-xs text-sm leading-relaxed text-[#F4ECE7]/75">
               We turn ideas into AI-enabled software — practical, scalable, and built for real impact.
             </p>
-            <a href="mailto:contact@attolabs.eu" className="mt-4 inline-block mono-label text-[#F6D24A] hover:underline">
+            <a href="mailto:contact@attolabs.eu" className="mt-4 inline-block mono-label text-page-accent hover:underline">
               contact@attolabs.eu
             </a>
           </div>
-          <div className="flex flex-wrap gap-x-6 gap-y-3 mono-label text-[#F4ECE7]/55">
-            <Link href="/cases" className="hover:text-[#F6D24A]">Work</Link>
-            <Link href="/about" className="hover:text-[#F6D24A]">About</Link>
-            <Link href="/careers" className="hover:text-[#F6D24A]">Jobs</Link>
-            <Link href="/cooperation" className="hover:text-[#F6D24A]">Contact</Link>
+          <div className="flex flex-wrap gap-x-6 gap-y-3 mono-label text-[#F4ECE7]/75">
+            <Link href="/cases" className="hover:text-page-accent">Work</Link>
+            <Link href="/about" className="hover:text-page-accent">About</Link>
+            <Link href="/careers" className="hover:text-page-accent">Jobs</Link>
+            <Link href="/cooperation" className="hover:text-page-accent">Contact</Link>
           </div>
         </div>
         <div className="grid gap-6 border-t border-[#F4ECE7]/10 pt-8 sm:grid-cols-2 lg:grid-cols-4">
           {offices.map((office) => (
             <div key={office.region}>
-              <div className="mono-label text-[#F6D24A]">{office.region}</div>
-              <p className="mt-2 text-sm leading-relaxed text-[#F4ECE7]/55">{office.address}</p>
+              <div className="mono-label text-page-accent">{office.region}</div>
+              <p className="mt-2 text-sm leading-relaxed text-[#F4ECE7]/75">{office.address}</p>
               <div className="mt-2 flex flex-col gap-1">
                 {office.phones.map((phone) => (
                   <a
                     key={phone}
                     href={`tel:${phone.replace(/\s/g, "")}`}
-                    className="inline-block text-sm text-[#F4ECE7]/70 hover:text-[#F6D24A]"
+                    className="inline-block text-sm text-[#F4ECE7]/85 hover:text-page-accent"
                   >
                     {phone}
                   </a>
@@ -1124,15 +1109,16 @@ function Footer() {
             </div>
           ))}
         </div>
-        <div className="mono-label text-[#F4ECE7]/35">© 2026 AttoLabs</div>
+        <div className="mono-label text-[#F4ECE7]/70">© 2026 AttoLabs</div>
       </div>
     </footer>
   )
 }
 
-function PageFrame({ children }: { children: ReactNode }) {
+function PageFrame({ theme, children }: { theme: SectionTheme; children: ReactNode }) {
   const [location] = useLocation()
   const reduce = useReducedMotion()
+  usePageTheme(theme)
   return (
     <div className="grain">
       <Header />
@@ -1149,28 +1135,8 @@ function PageFrame({ children }: { children: ReactNode }) {
   )
 }
 
-function HomeLegacy({ locale = 'en' }: { locale?: Locale }) {
-  return (
-    <>
-      <Meta locale={locale} page="home" />
-      <div className="grain">
-        <Hero />
-        <Stats />
-        <main>
-          <Work />
-          <Process />
-          <Proof />
-          <About />
-          <Jobs />
-          <Contact />
-        </main>
-        <Footer />
-      </div>
-    </>
-  )
-}
-
 function Home({ locale = 'en' }: { locale?: Locale }) {
+  usePageTheme(pageThemes.home)
   return (
     <>
       <Meta locale={locale} page="home" />
@@ -1197,7 +1163,7 @@ function CasesPage({ locale = 'en' }: { locale?: Locale }) {
   return (
     <>
       <Meta locale={locale} page="cases" />
-      <PageFrame>
+      <PageFrame theme={theme}>
         <main>
           <PageHero
             theme={theme}
@@ -1206,7 +1172,7 @@ function CasesPage({ locale = 'en' }: { locale?: Locale }) {
           >
             Filter by the problem space or capability you need. Open a case to see the thinking behind the build.
           </PageHero>
-          <Work sectionTheme={theme} />
+          <Work />
         </main>
       </PageFrame>
     </>
@@ -1220,11 +1186,11 @@ function CaseDetailPage({ locale = 'en' }: { locale?: Locale }) {
   const theme = pageThemes.cases
   if (!item) {
     return (
-      <PageFrame>
+      <PageFrame theme={theme}>
         <main className="site-wrap min-h-[70vh] py-28">
           <SectionTag>404 / Case not found</SectionTag>
           <h1 className="display-font mt-8 text-6xl font-semibold tracking-[-.08em]">This case moved.</h1>
-          <Link href="/cases" className="mt-8 inline-block mono-label text-brand-coral underline underline-offset-4">
+          <Link href="/cases" className="mt-8 inline-block mono-label text-page-accent underline underline-offset-4">
             Back to all work
           </Link>
         </main>
@@ -1234,70 +1200,48 @@ function CaseDetailPage({ locale = 'en' }: { locale?: Locale }) {
   return (
     <>
       <Meta locale={locale} page="cases" />
-      <PageFrame>
+      <PageFrame theme={theme}>
         <main className="bg-[#F4ECE7]">
           <div className="site-wrap py-20 md:py-28">
-            <Link href="/cases" className="mono-label text-brand-coral">
+            <Link href="/cases" className="mono-label text-page-accent">
               ← Back to all work
             </Link>
             <div className="mt-16 grid gap-12 md:grid-cols-[.9fr_1.1fr] md:items-end">
               <div>
                 <SectionTag>Case / {item.id}</SectionTag>
-                <div className={`mono-label mt-10 ${sectionAccentClass[theme]}`}>{item.client}</div>
+                <div className="mono-label mt-10 text-page-accent">{item.client}</div>
                 <h1 className="display-font mt-4 max-w-2xl text-[clamp(3.8rem,8vw,8rem)] font-semibold leading-[.86] tracking-[-.085em]">
                   {item.title}
                 </h1>
-                <p className="mt-8 max-w-xl text-lg leading-[1.65] text-[#1A1A1A]/65">
+                <p className="mt-8 max-w-xl text-lg leading-[1.65] text-[#1A1A1A]/75">
                   {item.summary} We partnered with the team from first sketch to a resilient product in the hands of real people.
                 </p>
               </div>
               <div className="aspect-[1.2]">
-                <CaseVisual item={item} />
+                <CaseVisual item={item} loading="eager" />
               </div>
             </div>
             <div className="mt-16 grid gap-8 border-t border-[#1A1A1A]/20 pt-8 md:grid-cols-3">
               <div>
-                <div className="mono-label text-[#1A1A1A]/50">Sector</div>
+                <div className="mono-label text-[#1A1A1A]/70">Sector</div>
                 <div className="mt-3 text-lg">{item.industry}</div>
               </div>
               <div>
-                <div className="mono-label text-[#1A1A1A]/50">Capabilities</div>
+                <div className="mono-label text-[#1A1A1A]/70">Capabilities</div>
                 <div className="mt-3 flex flex-wrap gap-2">
                   {item.services.map((service) => (
-                    <span key={service} className="border border-[#1A1A1A]/20 px-2 py-1 mono-label text-[.56rem]">
+                    <span key={service} className="border border-[#1A1A1A]/20 px-2 py-1 mono-label">
                       {service}
                     </span>
                   ))}
                 </div>
               </div>
               <div>
-                <div className="mono-label text-[#1A1A1A]/50">AttoLabs role</div>
+                <div className="mono-label text-[#1A1A1A]/70">AttoLabs role</div>
                 <div className="mt-3 text-lg">Product, systems, and delivery partner</div>
               </div>
             </div>
           </div>
-        </main>
-      </PageFrame>
-    </>
-  )
-}
-
-function AboutPageLegacy({ locale = 'en' }: { locale?: Locale }) {
-  const theme = pageThemes.about
-  return (
-    <>
-      <Meta locale={locale} page="about" />
-      <PageFrame>
-        <main>
-          <PageHero
-            theme={theme}
-            tag="01 / Who we are"
-            title={<>People who make<br /><span style={{ color: themeTokens[theme].accent }}>things clearer.</span></>}
-          >
-            We are an engineering studio for organizations doing consequential work. Small enough to care, experienced enough to make complexity useful.
-          </PageHero>
-          <About sectionTheme={theme} />
-          <Proof />
         </main>
       </PageFrame>
     </>
@@ -1309,7 +1253,7 @@ function AboutPage({ locale = 'en' }: { locale?: Locale }) {
   return (
     <>
       <Meta locale={locale} page="about" />
-      <PageFrame>
+      <PageFrame theme={theme}>
         <main>
           <PageHero
             theme={theme}
@@ -1318,8 +1262,8 @@ function AboutPage({ locale = 'en' }: { locale?: Locale }) {
           >
             We are an engineering studio for organizations doing consequential work. Large enough to carry complexity, experienced enough to make it useful.
           </PageHero>
-          <Clients sectionTheme={theme} />
-          <About sectionTheme={theme} />
+          <Clients />
+          <About />
           <Proof />
         </main>
       </PageFrame>
@@ -1332,7 +1276,7 @@ function CooperationPage({ locale = 'en' }: { locale?: Locale }) {
   return (
     <>
       <Meta locale={locale} page="cooperation" />
-      <PageFrame>
+      <PageFrame theme={theme}>
         <main>
           <PageHero
             theme={theme}
@@ -1354,7 +1298,7 @@ function CareersPage({ locale = 'en' }: { locale?: Locale }) {
   return (
     <>
       <Meta locale={locale} page="careers" />
-      <PageFrame>
+      <PageFrame theme={theme}>
         <main>
           <PageHero
             theme={theme}
@@ -1363,8 +1307,8 @@ function CareersPage({ locale = 'en' }: { locale?: Locale }) {
           >
             AttoLabs is looking for people who care about how things work and how they feel in the hands of real people.
           </PageHero>
-          <Jobs sectionTheme={theme} />
-          <About sectionTheme={theme} />
+          <Jobs />
+          <About />
         </main>
       </PageFrame>
     </>

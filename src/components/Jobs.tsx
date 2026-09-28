@@ -8,15 +8,6 @@ import {
   type PersonioJob,
 } from '@/lib/personio'
 
-type SectionTheme = 'coral' | 'yellow' | 'green' | 'blue'
-
-const sectionAccentClass: Record<SectionTheme, string> = {
-  coral: 'text-brand-coral',
-  yellow: 'text-brand-yellow',
-  green: 'text-brand-green',
-  blue: 'text-brand-blue',
-}
-
 const easeOut = [0.22, 1, 0.36, 1] as const
 
 const Reveal = ({
@@ -44,24 +35,19 @@ const Reveal = ({
 }
 
 const SectionTag = ({ children }: { children: ReactNode }) => (
-  <div className="mono-label flex items-center gap-3 text-[#1A1A1A]/55">
+  <div className="mono-label flex items-center gap-3 text-[#1A1A1A]/70">
     <span className="h-px w-7 bg-current" />
     {children}
   </div>
 )
 
-type JobsProps = {
-  sectionTheme?: SectionTheme
-}
-
-export const Jobs = ({ sectionTheme = 'coral' }: JobsProps) => {
+export const Jobs = () => {
   const [expanded, setExpanded] = useState(false)
   const [jobs, setJobs] = useState<PersonioJob[]>([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [selectedJob, setSelectedJob] = useState<PersonioJob | null>(null)
   const [applyOpen, setApplyOpen] = useState(false)
-  const accentClass = sectionAccentClass[sectionTheme]
 
   useEffect(() => {
     if (!expanded) return
@@ -112,9 +98,9 @@ export const Jobs = ({ sectionTheme = 'coral' }: JobsProps) => {
         <SectionTag>06 / Jobs</SectionTag>
         <div>
           <h2 className="display-font text-[clamp(2.8rem,6vw,5.8rem)] font-semibold leading-[.9] tracking-[-.075em]">
-            Make the<br /><span className={accentClass}>next thing.</span>
+            Make the<br /><span className="text-page-accent">next thing.</span>
           </h2>
-          <p className="mt-8 max-w-lg text-lg leading-[1.6] text-[#1A1A1A]/65">
+          <p className="mt-8 max-w-lg text-lg leading-[1.6] text-[#1A1A1A]/75">
             We&apos;re always interested in meeting people who care about how things work. Especially product-minded engineers, design engineers, and technical leads.
           </p>
           <button
@@ -138,7 +124,7 @@ export const Jobs = ({ sectionTheme = 'coral' }: JobsProps) => {
                 <div className="mt-8 border-t border-[#1A1A1A]/20">
                   {loading ? (
                     <div
-                      className="flex items-center gap-3 py-8 mono-label text-[#1A1A1A]/55"
+                      className="flex items-center gap-3 py-8 mono-label text-[#1A1A1A]/70"
                       data-testid="jobs-loading"
                     >
                       <LoaderCircle size={16} className="animate-spin" />
@@ -148,7 +134,7 @@ export const Jobs = ({ sectionTheme = 'coral' }: JobsProps) => {
 
                   {!loading && error ? (
                     <p
-                      className="py-8 text-sm text-[#F0543D]"
+                      className="py-8 text-sm text-page-accent"
                       role="alert"
                       data-testid="jobs-error"
                     >
@@ -158,7 +144,7 @@ export const Jobs = ({ sectionTheme = 'coral' }: JobsProps) => {
 
                   {!loading && !error && jobs.length === 0 ? (
                     <p
-                      className="py-8 text-sm text-[#1A1A1A]/55"
+                      className="py-8 text-sm text-[#1A1A1A]/70"
                       data-testid="jobs-empty"
                     >
                       No open roles right now. Check back soon.
@@ -175,7 +161,7 @@ export const Jobs = ({ sectionTheme = 'coral' }: JobsProps) => {
                             <div className="display-font text-xl font-semibold">
                               {job.name}
                             </div>
-                            <div className="mt-1 mono-label text-[#1A1A1A]/45">
+                            <div className="mt-1 mono-label text-[#1A1A1A]/70">
                               {formatJobMeta(job)}
                             </div>
                           </div>
@@ -183,7 +169,7 @@ export const Jobs = ({ sectionTheme = 'coral' }: JobsProps) => {
                             type="button"
                             onClick={() => handleOpenApply(job)}
                             aria-label={`Apply for ${job.name}`}
-                            className="flex h-9 w-9 shrink-0 items-center justify-center border border-[#F0543D] bg-[#F0543D] text-[#F4ECE7] transition-colors hover:border-[#1A1A1A] hover:bg-[#1A1A1A]"
+                            className="flex h-9 w-9 shrink-0 items-center justify-center border border-page-accent bg-page-accent text-[#F4ECE7] transition-colors hover:border-[#1A1A1A] hover:bg-[#1A1A1A]"
                             data-testid={`button-apply-${job.id}`}
                           >
                             <ArrowRight size={16} />
